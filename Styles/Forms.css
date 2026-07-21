@@ -1,0 +1,109 @@
+.settings-section {
+  box-shadow: none;
+}
+
+.accent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.accent-option {
+  min-height: 58px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-weight: 700;
+  text-align: left;
+}
+
+.accent-option.is-selected {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+  background: var(--accent-soft);
+}
+
+.accent-option:focus-visible {
+  outline: 3px solid var(--accent-muted);
+  outline-offset: 2px;
+}
+
+.accent-swatch {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  border: 3px solid color-mix(in srgb, var(--swatch) 20%, white);
+  border-radius: 50%;
+  background: var(--swatch);
+}
+
+.segmented-control {
+  padding: 4px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-subtle);
+}
+
+.segmented-control button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.segmented-control button.is-selected {
+  background: var(--surface-raised);
+  color: var(--accent-strong);
+  box-shadow: 0 4px 12px rgba(28, 50, 76, 0.08);
+}
+
+.segmented-control button:focus-visible {
+  outline: 3px solid var(--accent-muted);
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.setting-row p {
+  margin: 4px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.app-details {
+  display: grid;
+  gap: 0;
+  box-shadow: none;
+}
+
+.app-details > div {
+  padding: 11px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-details > div:last-child {
+  border-bottom: 0;
+}
+
+.app-details span {
+  color: var(--text-secondary);
+}

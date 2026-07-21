@@ -1,0 +1,50 @@
+{
+  "blue": {
+    "name": "Blue",
+    "accent": "#2878D3",
+    "accentStrong": "#1559A8",
+    "accentSoft": "#E9F3FF",
+    "accentMuted": "#BBD9F8",
+    "textOnAccent": "#FFFFFF"
+  },
+  "purple": {
+    "name": "Purple",
+    "accent": "#8457C8",
+    "accentStrong": "#61359B",
+    "accentSoft": "#F2ECFB",
+    "accentMuted": "#D8C4F1",
+    "textOnAccent": "#FFFFFF"
+  },
+  "green": {
+    "name": "Green",
+    "accent": "#328B68",
+    "accentStrong": "#21664C",
+    "accentSoft": "#EAF6F0",
+    "accentMuted": "#B9DECf",
+    "textOnAccent": "#FFFFFF"
+  },
+  "coral": {
+    "name": "Coral",
+    "accent": "#D86462",
+    "accentStrong": "#A94240",
+    "accentSoft": "#FCEDEC",
+    "accentMuted": "#F0C0BE",
+    "textOnAccent": "#FFFFFF"
+  },
+  "amber": {
+    "name": "Amber",
+    "accent": "#C47A16",
+    "accentStrong": "#93570B",
+    "accentSoft": "#FFF3DF",
+    "accentMuted": "#F1D09F",
+    "textOnAccent": "#FFFFFF"
+  },
+  "slate": {
+    "name": "Slate",
+    "accent": "#5C6B7A",
+    "accentStrong": "#3D4854",
+    "accentSoft": "#EDF1F4",
+    "accentMuted": "#C7D0D8",
+    "textOnAccent": "#FFFFFF"
+  }
+}

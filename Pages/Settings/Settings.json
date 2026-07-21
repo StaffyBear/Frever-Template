@@ -1,0 +1,7 @@
+{
+  "id": "settings",
+  "title": "Settings",
+  "description": "Shared application appearance and configuration page.",
+  "requiresAuthentication": false,
+  "accessLevel": "free"
+}

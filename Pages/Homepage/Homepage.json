@@ -1,0 +1,7 @@
+{
+  "id": "home",
+  "title": "Home",
+  "description": "Generic starting page for every Frever app.",
+  "requiresAuthentication": false,
+  "accessLevel": "free"
+}

@@ -1,0 +1,49 @@
+{
+  "items": [
+    {
+      "id": "home",
+      "label": "Home",
+      "icon": "home",
+      "folder": "Homepage",
+      "file": "Homepage",
+      "position": 1,
+      "fixed": true
+    },
+    {
+      "id": "page-one",
+      "label": "Page One",
+      "icon": "grid",
+      "folder": "PageOne",
+      "file": "PageOne",
+      "position": 2,
+      "fixed": false
+    },
+    {
+      "id": "page-two",
+      "label": "Page Two",
+      "icon": "list",
+      "folder": "PageTwo",
+      "file": "PageTwo",
+      "position": 3,
+      "fixed": false
+    },
+    {
+      "id": "page-three",
+      "label": "Page Three",
+      "icon": "chart",
+      "folder": "PageThree",
+      "file": "PageThree",
+      "position": 4,
+      "fixed": false
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "icon": "settings",
+      "folder": "Settings",
+      "file": "Settings",
+      "position": 5,
+      "fixed": true
+    }
+  ]
+}

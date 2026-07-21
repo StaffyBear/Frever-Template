@@ -1,0 +1,6 @@
+{
+  "enabled": false,
+  "projectUrl": "",
+  "anonKey": "",
+  "note": "Supabase will be connected in a later stage. Do not place a service-role key in frontend files."
+}

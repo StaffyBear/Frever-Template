@@ -1,0 +1,5 @@
+{
+  "component": "Navigation",
+  "maximumItems": 5,
+  "fixedItems": ["home", "settings"]
+}

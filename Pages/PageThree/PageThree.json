@@ -1,0 +1,7 @@
+{
+  "id": "page-three",
+  "title": "Page Three",
+  "description": "Third replaceable application page.",
+  "requiresAuthentication": false,
+  "accessLevel": "free"
+}
