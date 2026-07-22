@@ -1,60 +1,73 @@
 .page-section,
 .summary-card,
 .feature-tile,
-.list-card {
+.list-card,
+.home-menu-tile {
   border: 1px solid var(--border);
   background: var(--surface);
   box-shadow: var(--shadow);
 }
 
 .page-section {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   padding: 20px;
-  border-radius: 20px;
-}
-
-.hero-card {
-  position: relative;
-  overflow: hidden;
-  min-height: 230px;
-  padding: clamp(24px, 5vw, 42px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-  background:
-    radial-gradient(circle at 92% 8%, var(--accent-muted) 0, transparent 34%),
-    linear-gradient(145deg, var(--surface) 20%, var(--accent-soft) 140%);
-}
-
-.hero-card > div:first-child {
-  position: relative;
-  z-index: 1;
-  max-width: 720px;
-}
-
-.hero-mark {
-  width: clamp(92px, 20vw, 150px);
-  aspect-ratio: 1;
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  border-radius: 34%;
-  background: var(--accent);
-  color: var(--text-on-accent);
-  box-shadow: 0 22px 44px color-mix(in srgb, var(--accent) 28%, transparent);
-  font-size: clamp(3rem, 10vw, 5.4rem);
-  font-weight: 900;
-  letter-spacing: -0.08em;
-  transform: rotate(6deg);
+  border-radius: 18px;
 }
 
 .section-heading {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   display: flex;
   align-items: end;
   justify-content: space-between;
   gap: 16px;
+}
+
+.home-menu {
+  margin-top: 2px;
+}
+
+.home-tile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-menu-tile {
+  min-height: 72px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 17px;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: center;
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+}
+
+.home-menu-tile:hover,
+.home-menu-tile:focus-visible {
+  border-color: var(--accent-muted);
+  box-shadow: 0 13px 30px color-mix(in srgb, var(--accent) 13%, transparent);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.home-menu-tile.is-featured {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--text-on-accent);
+  box-shadow: 0 13px 28px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.home-menu-icon {
+  font-size: 1.16rem;
+  line-height: 1;
+}
+
+.home-menu-tile strong {
+  font-size: 0.94rem;
 }
 
 .tile-grid {
@@ -67,7 +80,7 @@
 }
 
 .feature-tile {
-  min-height: 145px;
+  min-height: 130px;
   padding: 18px;
   display: flex;
   flex-direction: column;

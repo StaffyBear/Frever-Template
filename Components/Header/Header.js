@@ -7,12 +7,16 @@ async function fetchText(path) {
 export const Header = {
   async mount(target, appConfig) {
     target.innerHTML = await fetchText("./Components/Header/Header.html");
+
     const appName = target.querySelector("[data-app-name]");
+    const appDescription = target.querySelector("[data-app-description]");
+
     if (appName) appName.textContent = appConfig.appName;
+    if (appDescription) appDescription.textContent = appConfig.description;
   },
 
-  setPage(page) {
-    const title = document.querySelector("[data-page-title]");
-    if (title) title.textContent = page.label;
+  setPage() {
+    // The compact app header remains consistent across every page.
+    // Page titles are displayed within each page's own HTML file.
   }
 };

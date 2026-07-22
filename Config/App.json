@@ -2,8 +2,8 @@
   "appCode": "template",
   "appName": "Frever Template",
   "shortName": "Frever",
-  "version": "0.1.0",
-  "description": "A clean reusable foundation for Frever applications.",
+  "version": "0.1.1",
+  "description": "A reusable foundation for Frever applications",
   "homeRoute": "home",
   "showVersionInSettings": true
 }

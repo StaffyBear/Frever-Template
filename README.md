@@ -1,8 +1,8 @@
-# Frever App Template v0.1
+# Frever App Template v0.1.1
 
 A clean, app-neutral shell for future Frever applications.
 
-## Included in v0.1
+## Included in v0.1.1
 
 - Five-position bottom navigation.
 - Fixed Home and Settings pages.
@@ -62,4 +62,4 @@ Colour definitions remain in `Config/AccentColours.json`.
 
 ## Supabase
 
-`Config/Supabase.json` is disabled in v0.1. Do not place a Supabase service-role key in frontend code. Authentication will be added after the shell has been tested.
+`Config/Supabase.json` is disabled in v0.1.1. Do not place a Supabase service-role key in frontend code. Authentication will be added after the shell has been tested.

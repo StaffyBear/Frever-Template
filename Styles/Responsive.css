@@ -1,22 +1,28 @@
 @media (max-width: 700px) {
-  .page-content {
-    padding: 18px 14px 30px;
+  .app-header,
+  .header-inner {
+    min-height: 84px;
   }
 
   .header-inner {
-    padding-right: 15px;
-    padding-left: 15px;
+    padding: 13px 16px;
   }
 
-  .hero-card {
-    min-height: auto;
-    align-items: flex-start;
+  .brand-mark {
+    width: 44px;
+    height: 44px;
   }
 
-  .hero-mark {
-    width: 84px;
-    border-radius: 25px;
-    font-size: 3.1rem;
+  .brand-copy small {
+    font-size: 0.8rem;
+  }
+
+  .page-content {
+    padding: 17px 15px 30px;
+  }
+
+  .home-tile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .tile-grid-three,
@@ -31,24 +37,42 @@
   .accent-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .bottom-navigation {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .bottom-navigation-inner {
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 16px 16px 0 0;
+  }
 }
 
 @media (max-width: 460px) {
-  .template-badge {
-    display: none;
+  .brand-copy strong {
+    font-size: 1.18rem;
   }
 
-  .hero-card {
-    display: block;
-  }
-
-  .hero-mark {
-    display: none;
+  .brand-copy small {
+    max-width: 245px;
   }
 
   .page-section {
     padding: 17px;
-    border-radius: 17px;
+    border-radius: 16px;
+  }
+
+  .home-menu-tile {
+    min-height: 70px;
+    padding: 12px 8px;
+    gap: 7px;
+  }
+
+  .home-menu-tile strong {
+    font-size: 0.83rem;
   }
 
   .counter-card,
@@ -62,17 +86,17 @@
   }
 
   .nav-label {
-    font-size: 0.62rem;
+    font-size: 0.61rem;
   }
 }
 
 @media (min-width: 1000px) {
   .page-content {
-    padding-top: 34px;
+    padding-top: 24px;
   }
 
   .page-section {
-    padding: 24px;
+    padding: 22px;
   }
 }
 
