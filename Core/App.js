@@ -4,7 +4,7 @@ import { Header } from "../Components/Header/Header.js";
 import { Navigation } from "../Components/Navigation/Navigation.js";
 import { Storage } from "./Storage.js";
 
-const BUILD_VERSION = "0.1.5";
+const BUILD_VERSION = "0.1.6";
 
 async function loadJson(path) {
   const separator = path.includes("?") ? "&" : "?";

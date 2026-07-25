@@ -68,13 +68,18 @@ function appearancePreviewOption(value, label, description) {
     <label class="appearance-preview-card" data-appearance-card="${value}">
       <input type="radio" name="appearance-preview" value="${value}">
       <span class="appearance-preview-window appearance-preview-${value}" aria-hidden="true">
-        <span class="appearance-preview-header"></span>
+        <span class="appearance-preview-header">
+          <span class="appearance-preview-logo"></span>
+          <span class="appearance-preview-title-line"></span>
+        </span>
         <span class="appearance-preview-content">
           <span class="appearance-preview-tile is-accent"></span>
           <span class="appearance-preview-tile"></span>
           <span class="appearance-preview-tile"></span>
         </span>
-        <span class="appearance-preview-navigation"></span>
+        <span class="appearance-preview-navigation">
+          <span></span><span></span><span></span>
+        </span>
       </span>
       <span class="appearance-preview-copy">
         <strong>${label}</strong>

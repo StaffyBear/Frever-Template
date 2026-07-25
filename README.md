@@ -1,4 +1,4 @@
-# Frever App Template v0.1.5
+# Frever App Template v0.1.6
 
 A clean, reusable static web-app shell for future Frever applications.
 
@@ -82,7 +82,7 @@ The Homepage tile, router and navigation label will use the updated configuratio
 
 ## Updating from v0.1.4
 
-After uploading v0.1.5, open `update.html` once. It removes only the old Frever Template service-worker cache, preserves local settings, and returns to the app.
+After uploading v0.1.6, open `update.html` once. It removes only the old Frever Template service-worker cache, preserves local settings, and returns to the app.
 
 ## Running locally
 

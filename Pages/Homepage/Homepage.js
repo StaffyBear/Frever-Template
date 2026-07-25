@@ -46,14 +46,11 @@ function renderTiles(grid, items) {
     ...(settings ? [settings] : [])
   ];
 
-  grid.innerHTML = visibleItems.map(item => {
-    const featured = item.id !== "settings" && item.id === selected[0];
-    return `
-      <button class="home-menu-tile${featured ? " is-featured" : ""}" type="button" data-open-page="${item.id}">
-        <span class="home-menu-icon" aria-hidden="true">${ICONS[item.icon] ?? ICONS.grid}</span>
-        <strong>${item.label}</strong>
-      </button>`;
-  }).join("");
+  grid.innerHTML = visibleItems.map(item => `
+    <button class="home-menu-tile" type="button" data-open-page="${item.id}">
+      <span class="home-menu-icon" aria-hidden="true">${ICONS[item.icon] ?? ICONS.grid}</span>
+      <strong>${item.label}</strong>
+    </button>`).join("");
 }
 
 export async function init({ navigate }) {
