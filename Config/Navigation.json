@@ -7,7 +7,9 @@
       "folder": "Homepage",
       "file": "Homepage",
       "position": 1,
-      "fixed": true
+      "fixed": true,
+      "showOnHome": false,
+      "showInNavigation": false
     },
     {
       "id": "page-one",
@@ -16,7 +18,9 @@
       "folder": "PageOne",
       "file": "PageOne",
       "position": 2,
-      "fixed": false
+      "fixed": false,
+      "showOnHome": true,
+      "showInNavigation": true
     },
     {
       "id": "page-two",
@@ -25,7 +29,9 @@
       "folder": "PageTwo",
       "file": "PageTwo",
       "position": 3,
-      "fixed": false
+      "fixed": false,
+      "showOnHome": true,
+      "showInNavigation": true
     },
     {
       "id": "page-three",
@@ -34,7 +40,9 @@
       "folder": "PageThree",
       "file": "PageThree",
       "position": 4,
-      "fixed": false
+      "fixed": false,
+      "showOnHome": true,
+      "showInNavigation": true
     },
     {
       "id": "settings",
@@ -43,7 +51,9 @@
       "folder": "Settings",
       "file": "Settings",
       "position": 5,
-      "fixed": true
+      "fixed": true,
+      "showOnHome": true,
+      "showInNavigation": false
     }
   ]
 }

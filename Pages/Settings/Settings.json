@@ -1,7 +1,7 @@
 {
   "id": "settings",
   "title": "Settings",
-  "description": "Shared application appearance and configuration page.",
+  "description": "Shared account, layout, navigation, backup and app information.",
   "requiresAuthentication": false,
   "accessLevel": "free"
 }

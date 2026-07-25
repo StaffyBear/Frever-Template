@@ -1,23 +1,33 @@
 <section class="page-title-block">
   <h1>Settings</h1>
+  <p>Choose a category.</p>
 </section>
 
-<section class="page-section settings-section">
-  <div class="section-heading">
-    <div>
-      <h2>Appearance</h2>
-      <p>Choose how this app looks on this device.</p>
-    </div>
-  </div>
-  <div class="segmented-control" data-appearance-options>
-    <button type="button" data-appearance="system">System</button>
-    <button type="button" data-appearance="light">Light</button>
-    <button type="button" data-appearance="dark">Dark</button>
-  </div>
-</section>
+<section class="settings-menu" aria-label="Settings categories">
+  <div class="settings-tile-grid">
+    <button class="settings-tile" type="button" data-settings-panel="account">
+      <span class="settings-tile-icon" aria-hidden="true">👤</span>
+      <strong>Account</strong>
+    </button>
 
-<section class="page-section app-details">
-  <div><span>App</span><strong data-settings-app-name>Frever Template</strong></div>
-  <div><span>Version</span><strong data-settings-version>0.1.2</strong></div>
-  <div><span>Database</span><strong>Not connected</strong></div>
+    <button class="settings-tile" type="button" data-settings-panel="home-layout">
+      <span class="settings-tile-icon" aria-hidden="true">🏠</span>
+      <strong>Home Layout</strong>
+    </button>
+
+    <button class="settings-tile" type="button" data-settings-panel="navigation">
+      <span class="settings-tile-icon" aria-hidden="true">🧭</span>
+      <strong>Navigation Buttons</strong>
+    </button>
+
+    <button class="settings-tile" type="button" data-settings-panel="backup">
+      <span class="settings-tile-icon" aria-hidden="true">📦</span>
+      <strong>Back up</strong>
+    </button>
+
+    <button class="settings-tile" type="button" data-settings-panel="about">
+      <span class="settings-tile-icon" aria-hidden="true">🐼</span>
+      <strong>About</strong>
+    </button>
+  </div>
 </section>

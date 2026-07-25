@@ -1,4 +1,4 @@
-const CACHE_NAME = "frever-template-v0.1.2.0";
+const CACHE_NAME = "frever-template-v0.1.3.0";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -23,6 +23,9 @@ const APP_FILES = [
   "./Components/Navigation/Navigation.json",
   "./Components/Navigation/Navigation.js",
   "./Components/Toast/Toast.js",
+  "./Components/Modal/Modal.html",
+  "./Components/Modal/Modal.json",
+  "./Components/Modal/Modal.js",
   "./Config/App.json",
   "./Config/Navigation.json",
   "./Config/Theme.json",

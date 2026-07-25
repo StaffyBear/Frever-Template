@@ -1,0 +1,5 @@
+{
+  "id": "shared-modal",
+  "closeOnBackdrop": true,
+  "closeOnEscape": true
+}

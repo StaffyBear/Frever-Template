@@ -34,8 +34,13 @@ async function startApp() {
       loadJson("./Config/Navigation.json")
     ]);
 
-    if (!Array.isArray(navigationConfig.items) || navigationConfig.items.length !== 5) {
-      throw new Error("Navigation.json must contain exactly five items.");
+    if (!Array.isArray(navigationConfig.items) || navigationConfig.items.length < 5) {
+      throw new Error("Navigation.json must contain Home, Settings and at least three app pages.");
+    }
+
+    if (!navigationConfig.items.some(item => item.id === "home") ||
+        !navigationConfig.items.some(item => item.id === "settings")) {
+      throw new Error("Navigation.json must contain fixed Home and Settings pages.");
     }
 
     Storage.setNamespace(appConfig.appCode);

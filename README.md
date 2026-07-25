@@ -1,86 +1,71 @@
-# Frever App Template v0.1.2
+# Frever App Template v0.1.3
 
-A clean, app-neutral shell for future Frever applications.
+A clean static web-app foundation for future Frever applications.
 
-## Included in v0.1.2
+## Included
 
-- Five-position bottom navigation.
-- Fixed Home and Settings shortcuts.
-- Three replaceable middle pages.
+- Shared app header with the app logo and name on every page.
+- Fixed app-wide accent colour selected in `Config/Theme.json`.
+- Light, dark and system appearance modes.
+- Flat page backgrounds in light and dark mode.
+- Homepage tiles generated from `Config/Navigation.json`.
+- Five-button bottom navigation with fixed Home and Settings positions.
+- Three configurable middle navigation buttons.
+- Standard Settings tiles:
+  - Account
+  - Home Layout
+  - Navigation Buttons
+  - Back up
+  - About
+- Shared modal component for settings pop-ups.
 - Separate HTML, JSON and JavaScript files for every page.
-- Shared logo and app name on every page.
-- App identity controlled by `Config/App.json`.
-- One fixed accent colour per app, selected in `Config/Theme.json`.
-- System, Light and Dark appearance options.
-- Compact tile-based Homepage without a duplicate Home title or breadcrumb.
-- Responsive mobile and desktop layout.
-- PWA manifest and service worker.
-- Supabase placeholder configuration, with authentication and database access intentionally disabled.
+- PWA manifest, service worker and icons.
+- Supabase configuration placeholder; authentication is not connected yet.
 
-## Run locally
-
-This app loads page files with `fetch()`, so do not open `index.html` directly from the file system.
-
-From the project folder, run:
-
-```bash
-python -m http.server 8000
-```
-
-Then open:
+## Page structure
 
 ```text
-http://localhost:8000
+Pages/
+├── Homepage/
+│   ├── Homepage.html
+│   ├── Homepage.json
+│   └── Homepage.js
+├── PageOne/
+├── PageTwo/
+├── PageThree/
+└── Settings/
 ```
 
-## Set the app identity
+When a page is renamed, rename its folder and all three matching files, then update the entry in `Config/Navigation.json`.
 
-Edit `Config/App.json`:
+## App identity
 
-```json
-{
-  "appCode": "fitness",
-  "appName": "Frever Fitness",
-  "description": "Workouts, routines, PBs and body tracking",
-  "logo": "./Assets/Logos/FitnessLogo.png"
-}
-```
+Edit `Config/App.json` to set the app name, description, version and logo.
 
-The shared header reads this file, so the same logo and app name appear on every page.
-
-## Set the app colour
+## App accent colour
 
 Edit `Config/Theme.json`:
 
 ```json
 {
-  "accent": "purple",
+  "accent": "blue",
   "defaultAppearance": "system",
   "allowUserAppearanceSelection": true
 }
 ```
 
-The available colour definitions remain in `Config/AccentColours.json`. Users cannot change the app accent colour.
+Available palettes are stored in `Config/AccentColours.json`. Each app uses one fixed accent colour.
 
-## Rename a generic page
+## Local settings
 
-To change Page One into Workout:
+Until Supabase is connected, appearance, Homepage tiles and navigation choices are stored in the browser using local storage.
 
-1. Rename `Pages/PageOne` to `Pages/Workout`.
-2. Rename the three files to `Workout.html`, `Workout.json` and `Workout.js`.
-3. Update the matching item in `Config/Navigation.json`:
+## Running locally
 
-```json
-{
-  "id": "workout",
-  "label": "Workout",
-  "folder": "Workout",
-  "file": "Workout"
-}
+This project must be served through a web server because it loads page files and JSON with `fetch()`.
+
+```bash
+python -m http.server 8080
 ```
 
-The router, Homepage tile and bottom-navigation shortcut will then use the renamed page.
-
-## Supabase
-
-`Config/Supabase.json` remains disabled in v0.1.2. Never place a Supabase service-role key in frontend code. Authentication will be added after the shell is approved.
+Then open `http://localhost:8080`.
