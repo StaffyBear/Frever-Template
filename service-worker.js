@@ -1,7 +1,8 @@
-const CACHE_NAME = "frever-template-v0.1.4.0";
+const CACHE_NAME = "frever-template-v0.1.5.0";
 const APP_FILES = [
   "./",
   "./index.html",
+  "./update.html",
   "./manifest.webmanifest",
   "./Styles/Theme.css",
   "./Styles/App.css",
@@ -65,20 +66,27 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
+async function networkFirst(request) {
+  const cache = await caches.open(CACHE_NAME);
+
+  try {
+    const response = await fetch(request, { cache: "no-store" });
+    if (response && response.status === 200 && response.type !== "opaque") {
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request, { ignoreSearch: true });
+    if (cached) return cached;
+    throw error;
+  }
+}
+
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        if (!response || response.status !== 200 || response.type === "opaque") {
-          return response;
-        }
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-        return response;
-      });
-    })
-  );
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+
+  event.respondWith(networkFirst(event.request));
 });

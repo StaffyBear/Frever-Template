@@ -2,6 +2,7 @@ let navigationItems = [];
 let activePageCleanup = null;
 let routeChangeCallback = null;
 let appName = "Frever";
+let appVersion = "";
 
 function normaliseRoute(value) {
   return value.replace(/^#\/?/, "").trim();
@@ -33,11 +34,10 @@ function escapeHtml(value) {
 }
 
 function pageTitleMarkup(page, metadata) {
-  const showTitle = metadata.showTitle !== false && page.id !== "home";
-  if (!showTitle) return "";
+  if (page.id === "home") return "";
 
   return `
-    <section class="page-title-block page-title-only">
+    <section class="page-title-block page-title-only" data-page-title>
       <h1>${escapeHtml(metadata.title || page.label)}</h1>
     </section>`;
 }
@@ -65,12 +65,13 @@ async function renderRoute(route) {
     </div>`;
 
   const base = `./Pages/${page.folder}/${page.file}`;
+  const versionQuery = appVersion ? `?v=${encodeURIComponent(appVersion)}` : "";
 
   try {
     const [html, metadata, module] = await Promise.all([
-      fetchText(`${base}.html`),
-      fetchJson(`${base}.json`),
-      import(new URL(`../Pages/${page.folder}/${page.file}.js`, import.meta.url).href)
+      fetchText(`${base}.html${versionQuery}`),
+      fetchJson(`${base}.json${versionQuery}`),
+      import(`${new URL(`../Pages/${page.folder}/${page.file}.js`, import.meta.url).href}${versionQuery}`)
     ]);
 
     content.innerHTML = `${pageTitleMarkup(page, metadata)}${html}`;
@@ -112,6 +113,7 @@ function handleHashChange() {
 export const Router = {
   init(items, onRouteChange, appConfig = {}) {
     appName = appConfig.appName || "Frever";
+    appVersion = appConfig.version || "";
     navigationItems = [...items].sort((a, b) => a.position - b.position);
     routeChangeCallback = onRouteChange;
     window.addEventListener("hashchange", handleHashChange);

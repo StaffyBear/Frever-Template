@@ -9,7 +9,11 @@ const ICONS = {
 };
 
 async function loadNavigation() {
-  const response = await fetch("./Config/Navigation.json", { cache: "no-store" });
+  const version = window.FREVER_APP_VERSION;
+  const path = version
+    ? `./Config/Navigation.json?v=${encodeURIComponent(version)}`
+    : "./Config/Navigation.json";
+  const response = await fetch(path, { cache: "no-store" });
   if (!response.ok) throw new Error("Could not load Config/Navigation.json");
   return response.json();
 }
@@ -30,6 +34,11 @@ function renderTiles(grid, items) {
   const selected = Array.isArray(stored)
     ? stored.filter(id => defaults.includes(id))
     : defaults;
+
+  // Clean up values saved by older template versions. Home and Settings are fixed.
+  if (!Array.isArray(stored) || JSON.stringify(selected) !== JSON.stringify(stored)) {
+    Storage.set("homeTiles", selected);
+  }
 
   const settings = items.find(item => item.id === "settings");
   const visibleItems = [

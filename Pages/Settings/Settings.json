@@ -3,6 +3,5 @@
   "title": "Settings",
   "description": "Shared account, layout, navigation, backup and app information.",
   "requiresAuthentication": false,
-  "accessLevel": "free",
-  "showTitle": true
+  "accessLevel": "free"
 }

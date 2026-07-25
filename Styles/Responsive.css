@@ -132,3 +132,18 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 420px) {
+  .appearance-preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .appearance-preview-card {
+    grid-template-columns: 112px minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .appearance-preview-copy {
+    text-align: left;
+  }
+}

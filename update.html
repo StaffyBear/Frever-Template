@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Updating Frever Template</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { min-height: 100vh; margin: 0; display: grid; place-items: center; background: #142b45; color: #fff; }
+    main { max-width: 34rem; padding: 2rem; text-align: center; }
+    .spinner { width: 2.5rem; height: 2.5rem; margin: 0 auto 1rem; border: .3rem solid rgba(255,255,255,.28); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="spinner" aria-hidden="true"></div>
+    <h1>Updating Frever Template</h1>
+    <p>Clearing the previous template cache…</p>
+  </main>
+  <script>
+    (async () => {
+      const basePath = new URL("./", location.href).pathname;
+
+      if ("serviceWorker" in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(
+          registrations
+            .filter(registration => new URL(registration.scope).pathname.startsWith(basePath))
+            .map(registration => registration.unregister())
+        );
+      }
+
+      if ("caches" in window) {
+        const keys = await caches.keys();
+        await Promise.all(
+          keys
+            .filter(key => key.startsWith("frever-template-"))
+            .map(key => caches.delete(key))
+        );
+      }
+
+      location.replace(`./?updated=0.1.5#home`);
+    })().catch(() => {
+      location.replace(`./?updated=0.1.5#home`);
+    });
+  </script>
+</body>
+</html>

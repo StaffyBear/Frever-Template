@@ -4,16 +4,33 @@ import { Header } from "../Components/Header/Header.js";
 import { Navigation } from "../Components/Navigation/Navigation.js";
 import { Storage } from "./Storage.js";
 
+const BUILD_VERSION = "0.1.5";
+
 async function loadJson(path) {
-  const response = await fetch(path, { cache: "no-store" });
+  const separator = path.includes("?") ? "&" : "?";
+  const response = await fetch(`${path}${separator}v=${BUILD_VERSION}`, { cache: "no-store" });
   if (!response.ok) throw new Error(`Could not load ${path}`);
   return response.json();
 }
 
-async function registerServiceWorker() {
+async function registerServiceWorker(version) {
   if (!("serviceWorker" in navigator)) return;
+
+  const hadController = Boolean(navigator.serviceWorker.controller);
+  let reloadingForUpdate = false;
+
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hadController || reloadingForUpdate) return;
+    reloadingForUpdate = true;
+    window.location.reload();
+  });
+
   try {
-    await navigator.serviceWorker.register("./service-worker.js");
+    const registration = await navigator.serviceWorker.register(
+      `./service-worker.js?v=${encodeURIComponent(version)}`,
+      { updateViaCache: "none" }
+    );
+    await registration.update();
   } catch (error) {
     console.warn("Service worker registration failed", error);
   }
@@ -43,6 +60,7 @@ async function startApp() {
       throw new Error("Navigation.json must contain fixed Home and Settings pages.");
     }
 
+    window.FREVER_APP_VERSION = appConfig.version || BUILD_VERSION;
     Storage.setNamespace(appConfig.appCode);
     applyAppIdentity(appConfig);
     await Theme.init();
@@ -60,7 +78,7 @@ async function startApp() {
 
     shell.dataset.ready = "true";
     shell.setAttribute("aria-busy", "false");
-    registerServiceWorker();
+    registerServiceWorker(appConfig.version);
   } catch (error) {
     console.error(error);
     document.querySelector("#page-content").innerHTML = `

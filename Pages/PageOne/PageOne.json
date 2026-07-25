@@ -3,6 +3,5 @@
   "title": "Page One",
   "description": "First replaceable application page.",
   "requiresAuthentication": false,
-  "accessLevel": "free",
-  "showTitle": true
+  "accessLevel": "free"
 }

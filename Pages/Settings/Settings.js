@@ -4,7 +4,9 @@ import { Modal } from "../../Components/Modal/Modal.js";
 import { showToast } from "../../Components/Toast/Toast.js";
 
 async function loadJson(path) {
-  const response = await fetch(path, { cache: "no-store" });
+  const version = window.FREVER_APP_VERSION;
+  const versionedPath = version ? `${path}?v=${encodeURIComponent(version)}` : path;
+  const response = await fetch(versionedPath, { cache: "no-store" });
   if (!response.ok) throw new Error(`Could not load ${path}`);
   return response.json();
 }
@@ -61,6 +63,26 @@ async function openAccount(appConfig) {
   });
 }
 
+function appearancePreviewOption(value, label, description) {
+  return `
+    <label class="appearance-preview-card" data-appearance-card="${value}">
+      <input type="radio" name="appearance-preview" value="${value}">
+      <span class="appearance-preview-window appearance-preview-${value}" aria-hidden="true">
+        <span class="appearance-preview-header"></span>
+        <span class="appearance-preview-content">
+          <span class="appearance-preview-tile is-accent"></span>
+          <span class="appearance-preview-tile"></span>
+          <span class="appearance-preview-tile"></span>
+        </span>
+        <span class="appearance-preview-navigation"></span>
+      </span>
+      <span class="appearance-preview-copy">
+        <strong>${label}</strong>
+        <small>${description}</small>
+      </span>
+    </label>`;
+}
+
 async function openHomeLayout(navigationItems) {
   const originalAppearance = Theme.getCurrent().savedAppearance;
   const defaults = defaultHomeTiles(navigationItems);
@@ -68,6 +90,12 @@ async function openHomeLayout(navigationItems) {
   const saved = Array.isArray(storedHomeTiles)
     ? storedHomeTiles.filter(id => defaults.includes(id))
     : defaults;
+
+  // Remove legacy Home or Settings values saved by older template versions.
+  if (!Array.isArray(storedHomeTiles) || JSON.stringify(saved) !== JSON.stringify(storedHomeTiles)) {
+    Storage.set("homeTiles", saved);
+  }
+
   const selectableItems = configurableHomeItems(navigationItems);
   let selectedAppearance = originalAppearance;
 
@@ -80,17 +108,17 @@ async function openHomeLayout(navigationItems) {
       <div class="modal-stack">
         <section class="modal-section">
           <h3>Appearance</h3>
-          <p>Select an option to preview it immediately. Save the layout to keep the change.</p>
-          <div class="segmented-control" data-modal-appearance>
-            <button type="button" data-appearance="system">System</button>
-            <button type="button" data-appearance="light">Light</button>
-            <button type="button" data-appearance="dark">Dark</button>
+          <p>Choose an appearance to preview it before saving.</p>
+          <div class="appearance-preview-grid" data-appearance-options>
+            ${appearancePreviewOption("system", "System", "Matches this device")}
+            ${appearancePreviewOption("light", "Light", "Light background")}
+            ${appearancePreviewOption("dark", "Dark", "Dark background")}
           </div>
         </section>
 
         <section class="modal-section">
           <h3>Homepage tiles</h3>
-          <p>Choose which app pages are shown. Settings is always included.</p>
+          <p>Choose which app pages are shown. Settings is always included and cannot be removed.</p>
           <div class="modal-option-grid" data-home-options>
             ${checkboxList(selectableItems, saved, "home-tile")}
           </div>
@@ -104,24 +132,24 @@ async function openHomeLayout(navigationItems) {
     `
   });
 
-  const updateAppearanceButtons = () => {
-    content.querySelectorAll("[data-appearance]").forEach(button => {
-      const selected = button.dataset.appearance === selectedAppearance;
-      button.classList.toggle("is-selected", selected);
-      button.setAttribute("aria-pressed", String(selected));
+  const updateAppearanceOptions = () => {
+    content.querySelectorAll("[data-appearance-card]").forEach(card => {
+      const selected = card.dataset.appearanceCard === selectedAppearance;
+      card.classList.toggle("is-selected", selected);
+      const input = card.querySelector('input[name="appearance-preview"]');
+      if (input) input.checked = selected;
     });
   };
-  updateAppearanceButtons();
+  updateAppearanceOptions();
+
+  content.addEventListener("change", event => {
+    if (!event.target.matches('input[name="appearance-preview"]')) return;
+    selectedAppearance = event.target.value;
+    Theme.previewAppearance(selectedAppearance);
+    updateAppearanceOptions();
+  });
 
   content.addEventListener("click", event => {
-    const appearanceButton = event.target.closest("[data-appearance]");
-    if (appearanceButton) {
-      selectedAppearance = appearanceButton.dataset.appearance;
-      Theme.previewAppearance(selectedAppearance);
-      updateAppearanceButtons();
-      return;
-    }
-
     if (event.target.closest("[data-cancel-home-layout]")) {
       Modal.close("cancel");
       return;
@@ -129,7 +157,8 @@ async function openHomeLayout(navigationItems) {
 
     if (event.target.closest("[data-save-home-layout]")) {
       const selectedTiles = [...content.querySelectorAll('input[name="home-tile"]:checked')]
-        .map(input => input.value);
+        .map(input => input.value)
+        .filter(id => defaults.includes(id));
 
       Storage.set("homeTiles", selectedTiles);
       Theme.setAppearance(selectedAppearance);

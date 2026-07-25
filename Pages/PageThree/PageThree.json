@@ -3,6 +3,5 @@
   "title": "Page Three",
   "description": "Third replaceable application page.",
   "requiresAuthentication": false,
-  "accessLevel": "free",
-  "showTitle": true
+  "accessLevel": "free"
 }

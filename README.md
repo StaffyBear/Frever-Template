@@ -1,4 +1,4 @@
-# Frever App Template v0.1.4
+# Frever App Template v0.1.5
 
 A clean, reusable static web-app shell for future Frever applications.
 
@@ -7,17 +7,33 @@ A clean, reusable static web-app shell for future Frever applications.
 - Separate HTML, JSON and JavaScript files for every page.
 - Shared app logo and app name on every page.
 - Homepage with no redundant page heading.
-- Page titles generated from each inner page's JSON file.
+- A page heading on every internal page.
 - Fixed Home and Settings navigation buttons.
 - Three configurable middle navigation buttons.
 - Settings tile layout with shared modal pop-ups.
-- Home Layout controls with live appearance preview.
-- Light, dark and system appearance options.
+- Visual System, Light and Dark appearance examples with live preview.
 - One fixed app accent selected in `Config/Theme.json`.
-- Settings permanently included on the Homepage.
+- Settings permanently included on the Homepage and excluded from removable options.
 - Responsive mobile-first styling.
-- PWA manifest and service worker.
+- PWA manifest and a network-first service worker to prevent mixed-version caches.
 - Supabase placeholders, intentionally disconnected until v0.2.
+
+## Page titles
+
+The text displayed above an internal page comes from that page's JSON file. For example:
+
+```text
+Pages/Settings/Settings.json
+```
+
+```json
+{
+  "id": "settings",
+  "title": "Settings"
+}
+```
+
+The Homepage is the only page that intentionally has no additional page title.
 
 ## Page structure
 
@@ -63,6 +79,10 @@ To turn Page One into Workout:
 3. Update that page's entry in `Config/Navigation.json`.
 
 The Homepage tile, router and navigation label will use the updated configuration.
+
+## Updating from v0.1.4
+
+After uploading v0.1.5, open `update.html` once. It removes only the old Frever Template service-worker cache, preserves local settings, and returns to the app.
 
 ## Running locally
 
