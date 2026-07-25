@@ -23,6 +23,25 @@ async function fetchJson(path) {
   return response.json();
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function pageTitleMarkup(page, metadata) {
+  const showTitle = metadata.showTitle !== false && page.id !== "home";
+  if (!showTitle) return "";
+
+  return `
+    <section class="page-title-block page-title-only">
+      <h1>${escapeHtml(metadata.title || page.label)}</h1>
+    </section>`;
+}
+
 async function renderRoute(route) {
   const page = findRoute(route);
   const content = document.querySelector("#page-content");
@@ -42,7 +61,7 @@ async function renderRoute(route) {
   content.innerHTML = `
     <div class="loading-state" role="status" aria-live="polite">
       <span class="loading-spinner" aria-hidden="true"></span>
-      <span>Loading ${page.label}…</span>
+      <span>Loading ${escapeHtml(page.label)}…</span>
     </div>`;
 
   const base = `./Pages/${page.folder}/${page.file}`;
@@ -54,7 +73,7 @@ async function renderRoute(route) {
       import(new URL(`../Pages/${page.folder}/${page.file}.js`, import.meta.url).href)
     ]);
 
-    content.innerHTML = html;
+    content.innerHTML = `${pageTitleMarkup(page, metadata)}${html}`;
     content.dataset.page = page.id;
     document.title = `${metadata.title} · ${appName}`;
 
@@ -77,8 +96,8 @@ async function renderRoute(route) {
       <section class="page-section error-panel">
         <p class="eyebrow">Page error</p>
         <h1>This page could not be loaded</h1>
-        <p>${error.message}</p>
-        <button class="button button-primary" type="button" data-retry-route="${page.id}">Try again</button>
+        <p>${escapeHtml(error.message)}</p>
+        <button class="button button-primary" type="button" data-retry-route="${escapeHtml(page.id)}">Try again</button>
       </section>`;
     content.querySelector("[data-retry-route]")?.addEventListener("click", () => renderRoute(page.id));
     content.setAttribute("aria-busy", "false");

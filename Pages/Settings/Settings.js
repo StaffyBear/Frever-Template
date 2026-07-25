@@ -18,11 +18,14 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function defaultHomeTiles(items) {
+function configurableHomeItems(items) {
   return items
-    .filter(item => item.id !== "home" && item.showOnHome !== false)
-    .sort((a, b) => a.position - b.position)
-    .map(item => item.id);
+    .filter(item => item.id !== "home" && item.id !== "settings" && item.showOnHome !== false)
+    .sort((a, b) => a.position - b.position);
+}
+
+function defaultHomeTiles(items) {
+  return configurableHomeItems(items).map(item => item.id);
 }
 
 function defaultNavigationButtons(items) {
@@ -59,21 +62,25 @@ async function openAccount(appConfig) {
 }
 
 async function openHomeLayout(navigationItems) {
-  const currentAppearance = Theme.getCurrent().appearance;
+  const originalAppearance = Theme.getCurrent().savedAppearance;
   const defaults = defaultHomeTiles(navigationItems);
   const storedHomeTiles = Storage.get("homeTiles", defaults);
-  const saved = Array.isArray(storedHomeTiles) ? storedHomeTiles : defaults;
-  const selectableItems = navigationItems
-    .filter(item => item.id !== "home")
-    .sort((a, b) => a.position - b.position);
+  const saved = Array.isArray(storedHomeTiles)
+    ? storedHomeTiles.filter(id => defaults.includes(id))
+    : defaults;
+  const selectableItems = configurableHomeItems(navigationItems);
+  let selectedAppearance = originalAppearance;
 
   const content = await Modal.open({
     title: "Home Layout",
+    onClose: reason => {
+      if (reason !== "save") Theme.cancelPreview();
+    },
     content: `
       <div class="modal-stack">
         <section class="modal-section">
           <h3>Appearance</h3>
-          <p>Choose how this app looks on this device.</p>
+          <p>Select an option to preview it immediately. Save the layout to keep the change.</p>
           <div class="segmented-control" data-modal-appearance>
             <button type="button" data-appearance="system">System</button>
             <button type="button" data-appearance="light">Light</button>
@@ -83,20 +90,20 @@ async function openHomeLayout(navigationItems) {
 
         <section class="modal-section">
           <h3>Homepage tiles</h3>
-          <p>Choose which pages are shown on the Homepage.</p>
+          <p>Choose which app pages are shown. Settings is always included.</p>
           <div class="modal-option-grid" data-home-options>
             ${checkboxList(selectableItems, saved, "home-tile")}
           </div>
         </section>
 
-        <div class="modal-action-row">
+        <div class="modal-action-row modal-action-row-split">
+          <button class="button button-secondary" type="button" data-cancel-home-layout>Cancel</button>
           <button class="button button-primary" type="button" data-save-home-layout>Save layout</button>
         </div>
       </div>
     `
   });
 
-  let selectedAppearance = currentAppearance;
   const updateAppearanceButtons = () => {
     content.querySelectorAll("[data-appearance]").forEach(button => {
       const selected = button.dataset.appearance === selectedAppearance;
@@ -110,7 +117,13 @@ async function openHomeLayout(navigationItems) {
     const appearanceButton = event.target.closest("[data-appearance]");
     if (appearanceButton) {
       selectedAppearance = appearanceButton.dataset.appearance;
+      Theme.previewAppearance(selectedAppearance);
       updateAppearanceButtons();
+      return;
+    }
+
+    if (event.target.closest("[data-cancel-home-layout]")) {
+      Modal.close("cancel");
       return;
     }
 
@@ -121,7 +134,7 @@ async function openHomeLayout(navigationItems) {
       Storage.set("homeTiles", selectedTiles);
       Theme.setAppearance(selectedAppearance);
       window.dispatchEvent(new CustomEvent("frever:home-layout-changed"));
-      Modal.close();
+      Modal.close("save");
       showToast("Home layout updated", "success");
     }
   });
@@ -146,7 +159,8 @@ async function openNavigation(navigationItems) {
           </div>
         </section>
 
-        <div class="modal-action-row">
+        <div class="modal-action-row modal-action-row-split">
+          <button class="button button-secondary" type="button" data-cancel-navigation>Cancel</button>
           <button class="button button-primary" type="button" data-save-navigation>Save navigation</button>
         </div>
       </div>
@@ -167,6 +181,11 @@ async function openNavigation(navigationItems) {
   });
 
   content.addEventListener("click", event => {
+    if (event.target.closest("[data-cancel-navigation]")) {
+      Modal.close("cancel");
+      return;
+    }
+
     if (!event.target.closest("[data-save-navigation]")) return;
 
     const selected = [...content.querySelectorAll('input[name="navigation-button"]:checked')]
@@ -179,7 +198,7 @@ async function openNavigation(navigationItems) {
 
     Storage.set("navigationButtons", selected);
     window.dispatchEvent(new CustomEvent("frever:navigation-changed"));
-    Modal.close();
+    Modal.close("save");
     showToast("Navigation updated", "success");
   });
 }
@@ -253,5 +272,9 @@ export async function init() {
   };
 
   page.addEventListener("click", clickHandler);
-  return () => page.removeEventListener("click", clickHandler);
+  return () => {
+    Modal.close("route-change");
+    Theme.cancelPreview();
+    page.removeEventListener("click", clickHandler);
+  };
 }

@@ -2,6 +2,7 @@ let root = null;
 let backdrop = null;
 let previousFocus = null;
 let mounted = false;
+let activeOnClose = null;
 
 async function fetchText(path) {
   const response = await fetch(path, { cache: "no-store" });
@@ -21,7 +22,7 @@ function handleKeydown(event) {
 
   if (event.key === "Escape") {
     event.preventDefault();
-    Modal.close();
+    Modal.close("dismiss");
     return;
   }
 
@@ -52,7 +53,7 @@ async function ensureMounted() {
 
   backdrop.addEventListener("click", event => {
     if (event.target === backdrop || event.target.closest("[data-modal-close]")) {
-      Modal.close();
+      Modal.close("dismiss");
     }
   });
 
@@ -61,10 +62,13 @@ async function ensureMounted() {
 }
 
 export const Modal = {
-  async open({ title, content }) {
+  async open({ title, content, onClose = null }) {
     await ensureMounted();
 
+    if (!backdrop.hidden) Modal.close("replaced");
+
     previousFocus = document.activeElement;
+    activeOnClose = typeof onClose === "function" ? onClose : null;
     backdrop.querySelector("[data-modal-title]").textContent = title;
     const contentRoot = backdrop.querySelector("[data-modal-content]");
     const panel = document.createElement("div");
@@ -82,12 +86,21 @@ export const Modal = {
     return panel;
   },
 
-  close() {
+  close(reason = "dismiss") {
     if (!backdrop || backdrop.hidden) return;
+
+    const onClose = activeOnClose;
+    activeOnClose = null;
     backdrop.hidden = true;
     backdrop.querySelector("[data-modal-content]").replaceChildren();
     document.body.classList.remove("modal-open");
     previousFocus?.focus?.();
     previousFocus = null;
+
+    try {
+      onClose?.(reason);
+    } catch (error) {
+      console.warn("Modal close handler failed", error);
+    }
   }
 };

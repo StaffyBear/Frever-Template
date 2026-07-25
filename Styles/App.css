@@ -151,6 +151,9 @@ p:last-child {
   color: var(--text-secondary);
 }
 
+.page-title-only h1 {
+  margin-bottom: 0;
+}
 
 
 .loading-state {

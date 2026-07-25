@@ -2,7 +2,7 @@
   "appCode": "template",
   "appName": "Frever Template",
   "shortName": "Frever",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A reusable foundation for Frever applications",
   "logo": "./Assets/Logos/frever-mark.svg",
   "homeRoute": "home",

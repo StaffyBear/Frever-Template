@@ -4,11 +4,22 @@ let themeConfig = null;
 let accentColours = null;
 let mediaQuery = null;
 let mediaListener = null;
+let previewPreference = null;
 
 async function loadJson(path) {
   const response = await fetch(path, { cache: "no-store" });
   if (!response.ok) throw new Error(`Could not load ${path}`);
   return response.json();
+}
+
+function validateAppearance(preference) {
+  if (!["light", "dark", "system"].includes(preference)) {
+    throw new Error(`Unknown appearance: ${preference}`);
+  }
+}
+
+function savedAppearance() {
+  return Storage.get("appearance", themeConfig.defaultAppearance);
 }
 
 function resolvedAppearance(preference) {
@@ -52,13 +63,13 @@ export const Theme = {
       loadJson("./Config/AccentColours.json")
     ]);
 
-    const appearance = Storage.get("appearance", themeConfig.defaultAppearance);
-    applyAppearance(appearance);
+    applyAppearance(savedAppearance());
     applyAccent();
 
     mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     mediaListener = () => {
-      if (Storage.get("appearance", themeConfig.defaultAppearance) === "system") {
+      const activePreference = previewPreference ?? savedAppearance();
+      if (activePreference === "system") {
         applyAppearance("system");
         notifyThemeChanged();
       }
@@ -73,15 +84,30 @@ export const Theme = {
   getCurrent() {
     return {
       accent: themeConfig.accent,
-      appearance: Storage.get("appearance", themeConfig.defaultAppearance),
+      appearance: previewPreference ?? savedAppearance(),
+      savedAppearance: savedAppearance(),
+      isPreviewing: previewPreference !== null,
       resolvedAppearance: document.documentElement.dataset.theme
     };
   },
 
+  previewAppearance(preference) {
+    validateAppearance(preference);
+    previewPreference = preference;
+    applyAppearance(preference);
+    notifyThemeChanged();
+  },
+
+  cancelPreview() {
+    if (previewPreference === null) return;
+    previewPreference = null;
+    applyAppearance(savedAppearance());
+    notifyThemeChanged();
+  },
+
   setAppearance(preference) {
-    if (!["light", "dark", "system"].includes(preference)) {
-      throw new Error(`Unknown appearance: ${preference}`);
-    }
+    validateAppearance(preference);
+    previewPreference = null;
     Storage.set("appearance", preference);
     applyAppearance(preference);
     notifyThemeChanged();

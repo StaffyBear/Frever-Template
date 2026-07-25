@@ -13,7 +13,7 @@
   --text-secondary: #647184;
   --border: #dce4ed;
   --shadow: 0 12px 32px rgba(28, 50, 76, 0.1);
-  --header-bg: linear-gradient(140deg, #142b45 0%, #0f2137 100%);
+  --header-bg: #142b45;
   --header-text: #ffffff;
   --danger: #b34444;
   --success: #287a56;
@@ -30,6 +30,6 @@
   --text-secondary: #aebdcd;
   --border: #314257;
   --shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
-  --header-bg: linear-gradient(140deg, #101b29 0%, #0b131e 100%);
+  --header-bg: #101b29;
   color-scheme: dark;
 }

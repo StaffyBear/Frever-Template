@@ -3,5 +3,6 @@
   "title": "Page Two",
   "description": "Second replaceable application page.",
   "requiresAuthentication": false,
-  "accessLevel": "free"
+  "accessLevel": "free",
+  "showTitle": true
 }

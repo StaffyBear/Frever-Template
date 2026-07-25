@@ -506,7 +506,13 @@
 
 .modal-action-row {
   display: flex;
+  align-items: center;
   justify-content: flex-start;
+  gap: 10px;
+}
+
+.modal-action-row-split {
+  justify-content: flex-end;
 }
 
 .modal-info-list {

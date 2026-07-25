@@ -14,36 +14,37 @@ async function loadNavigation() {
   return response.json();
 }
 
-function defaultHomeTiles(items) {
+function configurableHomeItems(items) {
   return items
-    .filter(item => item.id !== "home" && item.showOnHome !== false)
-    .sort((a, b) => a.position - b.position)
-    .map(item => item.id);
+    .filter(item => item.id !== "home" && item.id !== "settings" && item.showOnHome !== false)
+    .sort((a, b) => a.position - b.position);
+}
+
+function defaultHomeTiles(items) {
+  return configurableHomeItems(items).map(item => item.id);
 }
 
 function renderTiles(grid, items) {
   const defaults = defaultHomeTiles(items);
   const stored = Storage.get("homeTiles", defaults);
-  const selected = Array.isArray(stored) ? stored : defaults;
-  const visibleItems = items
-    .filter(item => selected.includes(item.id))
-    .sort((a, b) => a.position - b.position);
+  const selected = Array.isArray(stored)
+    ? stored.filter(id => defaults.includes(id))
+    : defaults;
 
-  if (!visibleItems.length) {
-    grid.innerHTML = `
-      <div class="empty-home-layout">
-        <p>No Homepage tiles are selected.</p>
-        <button class="button button-primary" type="button" data-open-page="settings">Open Settings</button>
-      </div>`;
-    return;
-  }
+  const settings = items.find(item => item.id === "settings");
+  const visibleItems = [
+    ...configurableHomeItems(items).filter(item => selected.includes(item.id)),
+    ...(settings ? [settings] : [])
+  ];
 
-  grid.innerHTML = visibleItems.map((item, index) => `
-    <button class="home-menu-tile${index === 0 ? " is-featured" : ""}" type="button" data-open-page="${item.id}">
-      <span class="home-menu-icon" aria-hidden="true">${ICONS[item.icon] ?? ICONS.grid}</span>
-      <strong>${item.label}</strong>
-    </button>
-  `).join("");
+  grid.innerHTML = visibleItems.map(item => {
+    const featured = item.id !== "settings" && item.id === selected[0];
+    return `
+      <button class="home-menu-tile${featured ? " is-featured" : ""}" type="button" data-open-page="${item.id}">
+        <span class="home-menu-icon" aria-hidden="true">${ICONS[item.icon] ?? ICONS.grid}</span>
+        <strong>${item.label}</strong>
+      </button>`;
+  }).join("");
 }
 
 export async function init({ navigate }) {
