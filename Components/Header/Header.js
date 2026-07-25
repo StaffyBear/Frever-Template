@@ -9,14 +9,17 @@ export const Header = {
     target.innerHTML = await fetchText("./Components/Header/Header.html");
 
     const appName = target.querySelector("[data-app-name]");
-    const appDescription = target.querySelector("[data-app-description]");
+    const appLogo = target.querySelector("[data-app-logo]");
 
     if (appName) appName.textContent = appConfig.appName;
-    if (appDescription) appDescription.textContent = appConfig.description;
+    if (appLogo) {
+      appLogo.src = appConfig.logo;
+      appLogo.alt = `${appConfig.appName} logo`;
+    }
   },
 
   setPage() {
-    // The compact app header remains consistent across every page.
-    // Page titles are displayed within each page's own HTML file.
+    // The shared logo and app name remain visible on every page.
+    // Each inner page supplies its own page title where needed.
   }
 };

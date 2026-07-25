@@ -1,6 +1,7 @@
 let navigationItems = [];
 let activePageCleanup = null;
 let routeChangeCallback = null;
+let appName = "Frever";
 
 function normaliseRoute(value) {
   return value.replace(/^#\/?/, "").trim();
@@ -55,7 +56,7 @@ async function renderRoute(route) {
 
     content.innerHTML = html;
     content.dataset.page = page.id;
-    document.title = `${metadata.title} · Frever`;
+    document.title = `${metadata.title} · ${appName}`;
 
     if (typeof module.init === "function") {
       const cleanup = await module.init({
@@ -90,7 +91,8 @@ function handleHashChange() {
 }
 
 export const Router = {
-  init(items, onRouteChange) {
+  init(items, onRouteChange, appConfig = {}) {
+    appName = appConfig.appName || "Frever";
     navigationItems = [...items].sort((a, b) => a.position - b.position);
     routeChangeCallback = onRouteChange;
     window.addEventListener("hashchange", handleHashChange);

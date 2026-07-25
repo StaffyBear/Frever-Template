@@ -1,4 +1,5 @@
 {
   "component": "Header",
-  "showTemplateBadge": true
+  "source": "Config/App.json",
+  "visibleOnAllPages": true
 }

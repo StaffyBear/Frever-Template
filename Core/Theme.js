@@ -22,10 +22,12 @@ function applyAppearance(preference) {
   document.documentElement.dataset.theme = resolved;
 }
 
-function applyAccent(key) {
-  const palette = accentColours[key] ?? accentColours[themeConfig.defaultAccent];
-  const root = document.documentElement;
+function applyAccent() {
+  const key = themeConfig.accent;
+  const palette = accentColours[key];
+  if (!palette) throw new Error(`Unknown app accent colour: ${key}`);
 
+  const root = document.documentElement;
   root.style.setProperty("--accent", palette.accent);
   root.style.setProperty("--accent-strong", palette.accentStrong);
   root.style.setProperty("--accent-soft", palette.accentSoft);
@@ -51,10 +53,8 @@ export const Theme = {
     ]);
 
     const appearance = Storage.get("appearance", themeConfig.defaultAppearance);
-    const accent = Storage.get("accent", themeConfig.defaultAccent);
-
     applyAppearance(appearance);
-    applyAccent(accent);
+    applyAccent();
 
     mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     mediaListener = () => {
@@ -70,23 +70,12 @@ export const Theme = {
     return structuredClone(themeConfig);
   },
 
-  getAccentColours() {
-    return structuredClone(accentColours);
-  },
-
   getCurrent() {
     return {
-      accent: Storage.get("accent", themeConfig.defaultAccent),
+      accent: themeConfig.accent,
       appearance: Storage.get("appearance", themeConfig.defaultAppearance),
       resolvedAppearance: document.documentElement.dataset.theme
     };
-  },
-
-  setAccent(key) {
-    if (!accentColours[key]) throw new Error(`Unknown accent colour: ${key}`);
-    Storage.set("accent", key);
-    applyAccent(key);
-    notifyThemeChanged();
   },
 
   setAppearance(preference) {
@@ -95,14 +84,6 @@ export const Theme = {
     }
     Storage.set("appearance", preference);
     applyAppearance(preference);
-    notifyThemeChanged();
-  },
-
-  reset() {
-    Storage.remove("accent");
-    Storage.remove("appearance");
-    applyAccent(themeConfig.defaultAccent);
-    applyAppearance(themeConfig.defaultAppearance);
     notifyThemeChanged();
   }
 };

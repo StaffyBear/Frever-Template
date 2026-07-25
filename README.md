@@ -1,16 +1,18 @@
-# Frever App Template v0.1.1
+# Frever App Template v0.1.2
 
 A clean, app-neutral shell for future Frever applications.
 
-## Included in v0.1.1
+## Included in v0.1.2
 
 - Five-position bottom navigation.
-- Fixed Home and Settings pages.
+- Fixed Home and Settings shortcuts.
 - Three replaceable middle pages.
 - Separate HTML, JSON and JavaScript files for every page.
-- App-wide accent colour library in `Config/AccentColours.json`.
-- Per-app defaults in `Config/Theme.json`.
-- Light, dark and device appearance modes.
+- Shared logo and app name on every page.
+- App identity controlled by `Config/App.json`.
+- One fixed accent colour per app, selected in `Config/Theme.json`.
+- System, Light and Dark appearance options.
+- Compact tile-based Homepage without a duplicate Home title or breadcrumb.
 - Responsive mobile and desktop layout.
 - PWA manifest and service worker.
 - Supabase placeholder configuration, with authentication and database access intentionally disabled.
@@ -31,6 +33,35 @@ Then open:
 http://localhost:8000
 ```
 
+## Set the app identity
+
+Edit `Config/App.json`:
+
+```json
+{
+  "appCode": "fitness",
+  "appName": "Frever Fitness",
+  "description": "Workouts, routines, PBs and body tracking",
+  "logo": "./Assets/Logos/FitnessLogo.png"
+}
+```
+
+The shared header reads this file, so the same logo and app name appear on every page.
+
+## Set the app colour
+
+Edit `Config/Theme.json`:
+
+```json
+{
+  "accent": "purple",
+  "defaultAppearance": "system",
+  "allowUserAppearanceSelection": true
+}
+```
+
+The available colour definitions remain in `Config/AccentColours.json`. Users cannot change the app accent colour.
+
 ## Rename a generic page
 
 To change Page One into Workout:
@@ -48,18 +79,8 @@ To change Page One into Workout:
 }
 ```
 
-## Change the app default colour
-
-Edit `Config/Theme.json`:
-
-```json
-{
-  "defaultAccent": "purple"
-}
-```
-
-Colour definitions remain in `Config/AccentColours.json`.
+The router, Homepage tile and bottom-navigation shortcut will then use the renamed page.
 
 ## Supabase
 
-`Config/Supabase.json` is disabled in v0.1.1. Do not place a Supabase service-role key in frontend code. Authentication will be added after the shell has been tested.
+`Config/Supabase.json` remains disabled in v0.1.2. Never place a Supabase service-role key in frontend code. Authentication will be added after the shell is approved.

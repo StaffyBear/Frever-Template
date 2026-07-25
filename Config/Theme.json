@@ -1,6 +1,5 @@
 {
-  "defaultAccent": "blue",
+  "accent": "blue",
   "defaultAppearance": "system",
-  "allowUserAccentSelection": true,
   "allowUserAppearanceSelection": true
 }

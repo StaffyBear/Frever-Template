@@ -2,45 +2,10 @@
   box-shadow: none;
 }
 
-.accent-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.accent-option {
-  min-height: 58px;
-  padding: 10px 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  background: var(--surface);
-  color: var(--text-primary);
-  cursor: pointer;
-  font-weight: 700;
-  text-align: left;
-}
-
-.accent-option.is-selected {
-  border-color: var(--accent);
-  box-shadow: inset 0 0 0 1px var(--accent);
-  background: var(--accent-soft);
-}
-
-.accent-option:focus-visible {
-  outline: 3px solid var(--accent-muted);
-  outline-offset: 2px;
-}
-
-.accent-swatch {
-  width: 26px;
-  height: 26px;
-  flex: 0 0 auto;
-  border: 3px solid color-mix(in srgb, var(--swatch) 20%, white);
-  border-radius: 50%;
-  background: var(--swatch);
+.settings-section .section-heading p {
+  margin: 4px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .segmented-control {

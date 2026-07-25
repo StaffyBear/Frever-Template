@@ -19,6 +19,12 @@ async function registerServiceWorker() {
   }
 }
 
+function applyAppIdentity(appConfig) {
+  document.title = appConfig.appName;
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.setAttribute("content", appConfig.description);
+}
+
 async function startApp() {
   const shell = document.querySelector("#app");
 
@@ -33,6 +39,7 @@ async function startApp() {
     }
 
     Storage.setNamespace(appConfig.appCode);
+    applyAppIdentity(appConfig);
     await Theme.init();
     await Header.mount(document.querySelector("#app-header"), appConfig);
     await Navigation.mount(
@@ -44,7 +51,7 @@ async function startApp() {
     Router.init(navigationConfig.items, page => {
       Header.setPage(page);
       Navigation.setActive(page.id);
-    });
+    }, appConfig);
 
     shell.dataset.ready = "true";
     shell.setAttribute("aria-busy", "false");
