@@ -111,5 +111,11 @@ export const Theme = {
     Storage.set("appearance", preference);
     applyAppearance(preference);
     notifyThemeChanged();
+  },
+
+  refreshFromStorage() {
+    previewPreference = null;
+    applyAppearance(savedAppearance());
+    notifyThemeChanged();
   }
 };

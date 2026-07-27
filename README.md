@@ -1,95 +1,84 @@
-# Frever App Template v0.1.6
+# Frever App Template v0.2.0
 
-A clean, reusable static web-app shell for future Frever applications.
+A clean reusable Frever shell with Supabase email/password authentication.
 
-## Included
+## Added in v0.2.0
 
-- Separate HTML, JSON and JavaScript files for every page.
-- Shared app logo and app name on every page.
-- Homepage with no redundant page heading.
-- A page heading on every internal page.
-- Fixed Home and Settings navigation buttons.
-- Three configurable middle navigation buttons.
-- Settings tile layout with shared modal pop-ups.
-- Visual System, Light and Dark appearance examples with live preview.
-- One fixed app accent selected in `Config/Theme.json`.
-- Settings permanently included on the Homepage and excluded from removable options.
-- Responsive mobile-first styling.
-- PWA manifest and a network-first service worker to prevent mixed-version caches.
-- Supabase placeholders, intentionally disconnected until v0.2.
+- Create account with display name, email and password.
+- Email confirmation through a dedicated branded Frever page.
+- Sign in, persistent browser session and sign out.
+- Forgotten-password email and dedicated reset page.
+- Profile display name stored in `frever_profiles`.
+- Appearance, Homepage tiles and navigation choices synchronised through `frever_app_settings` after sign-in.
+- Account, Back up and About Settings pop-ups now show live Supabase status.
+- The browser uses the Supabase publishable key only. No secret or service-role key is included.
 
-## Page titles
+## Required setup order
 
-The text displayed above an internal page comes from that page's JSON file. For example:
+1. Run `Supabase/002_frever_auth_and_preferences.sql` in the Supabase SQL Editor.
+2. Follow `Supabase/EMAIL_AND_URL_SETUP.md` exactly.
+3. Upload all v0.2.0 files over the current GitHub repository.
+4. Wait for GitHub Pages to deploy.
+5. Open `update.html` once to clear the previous app cache.
+6. Test account creation using an email address you can access.
 
-```text
-Pages/Settings/Settings.json
-```
+## Supabase configuration
 
-```json
-{
-  "id": "settings",
-  "title": "Settings"
-}
-```
+The public browser connection is stored in:
 
-The Homepage is the only page that intentionally has no additional page title.
+`Config/Supabase.json`
 
-## Page structure
+The current template uses:
+
+- Project URL: `https://supvcezvctjquoqkvyhy.supabase.co`
+- A Supabase publishable key
+- Production redirect base: `https://staffybear.github.io/Frever-Template/`
+
+When copying the template to a real app, update `authRedirectBaseUrl` to that app's final address and add its confirmation/reset URLs to the Supabase allow list.
+
+## Authentication pages
+
+The two public entry pages are:
+
+- `confirm-email.html`
+- `reset-password.html`
+
+Their actual page files remain in the agreed structure:
 
 ```text
 Pages/
-├── Homepage/
-│   ├── Homepage.html
-│   ├── Homepage.json
-│   └── Homepage.js
-├── PageOne/
-│   ├── PageOne.html
-│   ├── PageOne.json
-│   └── PageOne.js
-├── PageTwo/
-├── PageThree/
-└── Settings/
+├── ConfirmEmail/
+│   ├── ConfirmEmail.html
+│   ├── ConfirmEmail.json
+│   └── ConfirmEmail.js
+└── ResetPassword/
+    ├── ResetPassword.html
+    ├── ResetPassword.json
+    └── ResetPassword.js
 ```
 
-## App identity
+They do not appear on the Homepage or bottom navigation.
 
-Edit `Config/App.json` to set the app name, code, logo and description.
+## Shared settings stored in Supabase
 
-## Fixed app colour
-
-Edit `Config/Theme.json`:
+Each signed-in user's row in `frever_app_settings` contains JSON similar to:
 
 ```json
 {
-  "accent": "blue",
-  "defaultAppearance": "system",
-  "allowUserAppearanceSelection": true
+  "appearance": "system",
+  "homeTiles": ["page-one", "page-two", "page-three"],
+  "navigationButtons": ["page-one", "page-two", "page-three"]
 }
 ```
 
-Available palettes are defined in `Config/AccentColours.json`. Users can change appearance, but not the app's accent colour.
+Passwords are managed by Supabase Auth and never appear in the editable Frever tables.
 
-## Renaming a page
+## Local testing
 
-To turn Page One into Workout:
-
-1. Rename `Pages/PageOne` to `Pages/Workout`.
-2. Rename the three files to `Workout.html`, `Workout.json` and `Workout.js`.
-3. Update that page's entry in `Config/Navigation.json`.
-
-The Homepage tile, router and navigation label will use the updated configuration.
-
-## Updating from v0.1.4
-
-After uploading v0.1.6, open `update.html` once. It removes only the old Frever Template service-worker cache, preserves local settings, and returns to the app.
-
-## Running locally
-
-This project must run through a web server because it loads modules and page files with `fetch()`.
+Run through a web server:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Add the local confirmation and reset URLs listed in `Supabase/EMAIL_AND_URL_SETUP.md` before testing email links locally.

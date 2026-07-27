@@ -1,7 +1,9 @@
-const CACHE_NAME = "frever-template-v0.1.6.0";
+const CACHE_NAME = "frever-template-v0.2.0.0";
 const APP_FILES = [
   "./",
   "./index.html",
+  "./confirm-email.html",
+  "./reset-password.html",
   "./update.html",
   "./manifest.webmanifest",
   "./Styles/Theme.css",
@@ -11,12 +13,14 @@ const APP_FILES = [
   "./Styles/Navigation.css",
   "./Styles/Pages.css",
   "./Styles/Responsive.css",
+  "./Styles/Auth.css",
   "./Core/App.js",
   "./Core/Router.js",
   "./Core/Theme.js",
   "./Core/Storage.js",
   "./Core/Auth.js",
   "./Core/Database.js",
+  "./Core/StandaloneAuthPage.js",
   "./Components/Header/Header.html",
   "./Components/Header/Header.json",
   "./Components/Header/Header.js",
@@ -47,6 +51,12 @@ const APP_FILES = [
   "./Pages/Settings/Settings.html",
   "./Pages/Settings/Settings.json",
   "./Pages/Settings/Settings.js",
+  "./Pages/ConfirmEmail/ConfirmEmail.html",
+  "./Pages/ConfirmEmail/ConfirmEmail.json",
+  "./Pages/ConfirmEmail/ConfirmEmail.js",
+  "./Pages/ResetPassword/ResetPassword.html",
+  "./Pages/ResetPassword/ResetPassword.json",
+  "./Pages/ResetPassword/ResetPassword.js",
   "./Assets/Icons/icon-192.png",
   "./Assets/Icons/icon-512.png",
   "./Assets/Logos/frever-mark.svg"

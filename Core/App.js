@@ -3,8 +3,11 @@ import { Router } from "./Router.js";
 import { Header } from "../Components/Header/Header.js";
 import { Navigation } from "../Components/Navigation/Navigation.js";
 import { Storage } from "./Storage.js";
+import { Auth } from "./Auth.js";
+import { Database } from "./Database.js";
 
-const BUILD_VERSION = "0.1.6";
+const BUILD_VERSION = "0.2.0";
+let authSyncInProgress = false;
 
 async function loadJson(path) {
   const separator = path.includes("?") ? "&" : "?";
@@ -42,6 +45,21 @@ function applyAppIdentity(appConfig) {
   if (description) description.setAttribute("content", appConfig.description);
 }
 
+async function syncSignedInPreferences() {
+  if (authSyncInProgress || !Auth.getCurrentUser() || !Database.isEnabled()) return;
+  authSyncInProgress = true;
+  try {
+    await Database.syncUserPreferences();
+  } catch (error) {
+    console.warn("Could not synchronise Frever settings", error);
+    window.dispatchEvent(new CustomEvent("frever:settings-sync-error", {
+      detail: { error }
+    }));
+  } finally {
+    authSyncInProgress = false;
+  }
+}
+
 async function startApp() {
   const shell = document.querySelector("#app");
 
@@ -63,7 +81,16 @@ async function startApp() {
     window.FREVER_APP_VERSION = appConfig.version || BUILD_VERSION;
     Storage.setNamespace(appConfig.appCode);
     applyAppIdentity(appConfig);
+
     await Theme.init();
+    await Auth.init();
+    Database.init({
+      supabaseClient: Auth.getClient(),
+      code: appConfig.appCode
+    });
+
+    await syncSignedInPreferences();
+
     await Header.mount(document.querySelector("#app-header"), appConfig);
     await Navigation.mount(
       document.querySelector("#bottom-navigation"),
@@ -75,6 +102,10 @@ async function startApp() {
       Header.setPage(page);
       Navigation.setActive(page.id);
     }, appConfig);
+
+    window.addEventListener("frever:auth-changed", event => {
+      if (event.detail?.user) syncSignedInPreferences();
+    });
 
     shell.dataset.ready = "true";
     shell.setAttribute("aria-busy", "false");

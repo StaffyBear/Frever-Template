@@ -1,6 +1,9 @@
 {
-  "enabled": false,
-  "projectUrl": "",
-  "anonKey": "",
-  "note": "Supabase will be connected in a later stage. Do not place a service-role key in frontend files."
+  "enabled": true,
+  "projectUrl": "https://supvcezvctjquoqkvyhy.supabase.co",
+  "publishableKey": "sb_publishable_zeZLIHnWIK-jRUKMfquGCQ_d3XHx2tn",
+  "authRedirectBaseUrl": "https://staffybear.github.io/Frever-Template/",
+  "confirmEmailPath": "confirm-email.html",
+  "resetPasswordPath": "reset-password.html",
+  "note": "The publishable key is intended for browser use. Never place a secret or service-role key in frontend files."
 }

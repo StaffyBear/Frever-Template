@@ -1,0 +1,66 @@
+.standalone-auth-shell {
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+.standalone-auth-content {
+  width: min(100%, 620px);
+  margin: 0 auto;
+  padding: 36px 22px 64px;
+}
+
+.auth-action-card {
+  padding: clamp(24px, 6vw, 38px);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.auth-action-card h1 {
+  margin-bottom: 10px;
+}
+
+.auth-action-card > div > p {
+  color: var(--text-secondary);
+}
+
+.auth-action-card .form-stack {
+  margin: 22px auto 0;
+  text-align: left;
+}
+
+.auth-result-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.auth-result-success {
+  background: color-mix(in srgb, var(--success) 18%, var(--surface));
+  color: var(--success);
+}
+
+.auth-result-error {
+  background: color-mix(in srgb, var(--danger) 14%, var(--surface));
+  color: var(--danger);
+}
+
+.auth-safety-note {
+  margin-top: 14px;
+  font-size: 0.84rem;
+}
+
+@media (max-width: 520px) {
+  .standalone-auth-content {
+    padding: 24px 14px 48px;
+  }
+}

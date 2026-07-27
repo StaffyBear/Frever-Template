@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2878d3">
+  <meta name="description" content="Confirm a Frever email address.">
+  <title>Confirm email · Frever</title>
+  <link rel="icon" href="./Assets/Icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="./Styles/Theme.css?v=0.2.0">
+  <link rel="stylesheet" href="./Styles/App.css?v=0.2.0">
+  <link rel="stylesheet" href="./Styles/Components.css?v=0.2.0">
+  <link rel="stylesheet" href="./Styles/Forms.css?v=0.2.0">
+  <link rel="stylesheet" href="./Styles/Auth.css?v=0.2.0">
+</head>
+<body>
+  <div id="standalone-auth-app" class="standalone-auth-shell" data-page-folder="ConfirmEmail" data-page-file="ConfirmEmail" data-page-title="Confirm email" aria-busy="true">
+    <header class="app-header standalone-auth-header">
+      <div class="header-inner">
+        <a class="brand-link" href="./">
+          <img class="brand-mark" data-brand-logo alt="">
+          <strong class="brand-name" data-brand-name>Frever</strong>
+        </a>
+      </div>
+    </header>
+    <main class="standalone-auth-content" data-standalone-content>
+      <div class="loading-state" role="status"><span class="loading-spinner"></span><span>Loading…</span></div>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="./Core/StandaloneAuthPage.js?v=0.2.0"></script>
+</body>
+</html>
