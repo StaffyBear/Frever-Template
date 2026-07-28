@@ -10,20 +10,30 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./Assets/Icons/icon-192.png" type="image/png">
 
-  <link rel="stylesheet" href="./Styles/Theme.css?v=0.2.0">
-  <link rel="stylesheet" href="./Styles/App.css?v=0.2.0">
-  <link rel="stylesheet" href="./Styles/Components.css?v=0.2.0">
-  <link rel="stylesheet" href="./Styles/Forms.css?v=0.2.0">
-  <link rel="stylesheet" href="./Styles/Navigation.css?v=0.2.0">
-  <link rel="stylesheet" href="./Styles/Pages.css?v=0.2.0">
-  <link rel="stylesheet" href="./Styles/Responsive.css?v=0.2.0">
+  <link rel="stylesheet" href="./Styles/Theme.css?v=0.2.2">
+  <link rel="stylesheet" href="./Styles/App.css?v=0.2.2">
+  <link rel="stylesheet" href="./Styles/Components.css?v=0.2.2">
+  <link rel="stylesheet" href="./Styles/Forms.css?v=0.2.2">
+  <link rel="stylesheet" href="./Styles/Auth.css?v=0.2.2">
+  <link rel="stylesheet" href="./Styles/Navigation.css?v=0.2.2">
+  <link rel="stylesheet" href="./Styles/Pages.css?v=0.2.2">
+  <link rel="stylesheet" href="./Styles/Responsive.css?v=0.2.2">
 </head>
 <body>
   <noscript>
     <div class="noscript-message">This app needs JavaScript enabled.</div>
   </noscript>
 
-  <div id="app" class="app-shell" aria-busy="true">
+  <div id="auth-gate" class="auth-gate" aria-busy="true">
+    <main id="auth-gate-content" class="auth-gate-content">
+      <div class="loading-state" role="status" aria-live="polite">
+        <span class="loading-spinner" aria-hidden="true"></span>
+        <span>Checking your account…</span>
+      </div>
+    </main>
+  </div>
+
+  <div id="app" class="app-shell" aria-busy="true" hidden aria-hidden="true">
     <header id="app-header" class="app-header"></header>
 
     <main id="page-content" class="page-content" tabindex="-1">
@@ -39,6 +49,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" src="./Core/App.js?v=0.2.0"></script>
+  <script type="module" src="./Core/App.js?v=0.2.2"></script>
 </body>
 </html>

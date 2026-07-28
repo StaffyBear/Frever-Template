@@ -1,0 +1,6 @@
+{
+  "id": "authentication",
+  "title": "Sign in",
+  "showInNavigation": false,
+  "requiresAuthentication": false
+}

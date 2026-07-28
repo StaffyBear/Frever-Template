@@ -34,7 +34,7 @@ function visibleItems() {
   const defaults = defaultMiddleButtons(allItems);
   const storedValue = Storage.get("navigationButtons", defaults);
   const stored = Array.isArray(storedValue) ? storedValue : defaults;
-  const validIds = stored.filter(id => allItems.some(item => item.id === id && !item.fixed));
+  const validIds = stored.filter(id => allItems.some(item => item.id === id && !item.fixed && item.showInNavigation !== false));
   const selectedIds = validIds.length === 3 ? validIds : defaults;
   const middle = allItems
     .filter(item => selectedIds.includes(item.id))

@@ -5,5 +5,7 @@
   "authRedirectBaseUrl": "https://staffybear.github.io/Frever-Template/",
   "confirmEmailPath": "confirm-email.html",
   "resetPasswordPath": "reset-password.html",
-  "note": "The publishable key is intended for browser use. Never place a secret or service-role key in frontend files."
+  "note": "The publishable key is intended for browser use. Never place a secret or service-role key in frontend files.",
+  "emailConfirmationEnabled": false,
+  "passwordResetEnabled": false
 }

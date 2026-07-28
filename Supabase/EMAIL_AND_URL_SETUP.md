@@ -1,4 +1,4 @@
-# Supabase authentication setup for Frever Template v0.2.0
+# Supabase authentication setup for Frever Template v0.2.2
 
 The app code is ready, but Supabase must be told which URLs and email links to use.
 

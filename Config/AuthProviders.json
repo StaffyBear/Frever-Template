@@ -1,0 +1,9 @@
+{
+  "emailPassword": true,
+  "passwordReset": false,
+  "google": false,
+  "microsoft": false,
+  "apple": false,
+  "phone": false,
+  "note": "Only enabled providers are displayed. Provider credentials must also be configured in Supabase Authentication before enabling them here."
+}

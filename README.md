@@ -1,84 +1,52 @@
-# Frever App Template v0.2.0
+# Frever App Template v0.2.2
 
-A clean reusable Frever shell with Supabase email/password authentication.
+A reusable Frever shell with a required Supabase account session.
 
-## Added in v0.2.0
+## Authentication flow
 
-- Create account with display name, email and password.
-- Email confirmation through a dedicated branded Frever page.
-- Sign in, persistent browser session and sign out.
-- Forgotten-password email and dedicated reset page.
-- Profile display name stored in `frever_profiles`.
-- Appearance, Homepage tiles and navigation choices synchronised through `frever_app_settings` after sign-in.
-- Account, Back up and About Settings pop-ups now show live Supabase status.
-- The browser uses the Supabase publishable key only. No secret or service-role key is included.
+- Signed-out users see a dedicated Sign in / Create account page.
+- The app header, Homepage, pages, Settings and bottom navigation remain hidden until sign-in succeeds.
+- Registration uses email, password and password confirmation only.
+- The Account Settings tile opens a pop-up for optional profile details.
+- The Sign out Settings tile is always available while inside the app.
+- Signing out returns the user to the Sign in / Create account page.
+- Sessions persist through Supabase Auth.
 
-## Required setup order
+## Temporary no-email setup
 
-1. Run `Supabase/002_frever_auth_and_preferences.sql` in the Supabase SQL Editor.
-2. Follow `Supabase/EMAIL_AND_URL_SETUP.md` exactly.
-3. Upload all v0.2.0 files over the current GitHub repository.
-4. Wait for GitHub Pages to deploy.
-5. Open `update.html` once to clear the previous app cache.
-6. Test account creation using an email address you can access.
+No new SQL migration is required for v0.2.2.
 
-## Supabase configuration
+In Supabase open **Authentication → Sign In / Providers → Email** and confirm:
 
-The public browser connection is stored in:
+1. Email provider is enabled.
+2. New user sign-ups are allowed.
+3. **Confirm email** is disabled while custom email delivery is deferred.
 
-`Config/Supabase.json`
+Password-reset controls remain hidden until SMTP/email delivery is configured.
 
-The current template uses:
+## Page structure
 
-- Project URL: `https://supvcezvctjquoqkvyhy.supabase.co`
-- A Supabase publishable key
-- Production redirect base: `https://staffybear.github.io/Frever-Template/`
-
-When copying the template to a real app, update `authRedirectBaseUrl` to that app's final address and add its confirmation/reset URLs to the Supabase allow list.
-
-## Authentication pages
-
-The two public entry pages are:
-
-- `confirm-email.html`
-- `reset-password.html`
-
-Their actual page files remain in the agreed structure:
+The public authentication screen follows the same page-file convention:
 
 ```text
 Pages/
-├── ConfirmEmail/
-│   ├── ConfirmEmail.html
-│   ├── ConfirmEmail.json
-│   └── ConfirmEmail.js
-└── ResetPassword/
-    ├── ResetPassword.html
-    ├── ResetPassword.json
-    └── ResetPassword.js
+└── Authentication/
+    ├── Authentication.html
+    ├── Authentication.json
+    └── Authentication.js
 ```
 
-They do not appear on the Homepage or bottom navigation.
+It is not part of `Config/Navigation.json`, the Homepage tiles or bottom navigation.
 
-## Shared settings stored in Supabase
+## Social providers
 
-Each signed-in user's row in `frever_app_settings` contains JSON similar to:
+`Config/AuthProviders.json` contains prepared switches for Google, Microsoft and Apple. Leave a provider set to `false` until its OAuth application and Supabase provider configuration are complete.
 
-```json
-{
-  "appearance": "system",
-  "homeTiles": ["page-one", "page-two", "page-three"],
-  "navigationButtons": ["page-one", "page-two", "page-three"]
-}
-```
+## Upload
+
+1. Upload all v0.2.2 files over the current GitHub repository.
+2. Wait for GitHub Pages to finish deploying.
+3. Open `update.html` once to clear the previous service-worker cache.
+4. Test registration, sign out and sign in.
 
 Passwords are managed by Supabase Auth and never appear in the editable Frever tables.
-
-## Local testing
-
-Run through a web server:
-
-```bash
-python -m http.server 8000
-```
-
-Add the local confirmation and reset URLs listed in `Supabase/EMAIL_AND_URL_SETUP.md` before testing email links locally.

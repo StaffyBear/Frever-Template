@@ -64,3 +64,107 @@
     padding: 24px 14px 48px;
   }
 }
+
+
+.account-page-shell {
+  width: min(100%, 680px);
+}
+
+.account-page-card {
+  padding: clamp(20px, 4vw, 30px);
+  display: grid;
+  gap: 18px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.auth-page-copy h2 { margin: 0 0 5px; }
+.auth-page-copy p { margin: 0; color: var(--text-secondary); }
+.oauth-stack { display: grid; gap: 10px; }
+.oauth-button { width: 100%; }
+.auth-divider { display: flex; align-items: center; gap: 12px; color: var(--text-secondary); font-size: .82rem; }
+.auth-divider::before, .auth-divider::after { content: ""; height: 1px; flex: 1; background: var(--border); }
+.form-field small { color: var(--text-secondary); font-weight: 600; }
+
+.auth-gate {
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+.auth-gate[hidden],
+.app-shell[hidden] {
+  display: none !important;
+}
+
+.auth-gate-content {
+  min-height: 100vh;
+}
+
+.authentication-page {
+  min-height: 100vh;
+  padding: max(28px, env(safe-area-inset-top)) 18px max(40px, env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+}
+
+.authentication-card {
+  width: min(100%, 520px);
+  padding: clamp(22px, 5vw, 34px);
+  display: grid;
+  gap: 24px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow);
+}
+
+.authentication-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.authentication-logo {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.16));
+}
+
+.authentication-brand h1 {
+  margin-bottom: 4px;
+}
+
+.authentication-brand p:not(.eyebrow) {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.authentication-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.authentication-panel .form-stack {
+  margin-top: 2px;
+}
+
+.button-full {
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .authentication-page {
+    padding-inline: 12px;
+  }
+
+  .authentication-card {
+    border-radius: 20px;
+  }
+
+  .authentication-brand {
+    align-items: flex-start;
+  }
+}

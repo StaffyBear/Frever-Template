@@ -5,7 +5,7 @@ let authSubscription = null;
 let initialized = false;
 
 async function loadConfig() {
-  const version = window.FREVER_APP_VERSION || "0.2.0";
+  const version = window.FREVER_APP_VERSION || "0.2.2";
   const response = await fetch(`./Config/Supabase.json?v=${encodeURIComponent(version)}`, {
     cache: "no-store"
   });
@@ -65,8 +65,8 @@ export const Auth = {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: false,
-        flowType: "implicit"
+        detectSessionInUrl: true,
+        flowType: "pkce"
       }
     });
 
@@ -125,19 +125,25 @@ export const Auth = {
     return redirectUrl(config.resetPasswordPath || "reset-password.html");
   },
 
-  async signUp({ email, password, displayName }) {
+  async signUp({ email, password }) {
     const supabaseClient = requireClient();
-    const { data, error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: this.getConfirmEmailUrl(),
-        data: {
-          display_name: displayName?.trim() || undefined
-        }
+    const options = {};
+
+    if (config?.emailConfirmationEnabled) {
+      options.emailRedirectTo = this.getConfirmEmailUrl();
+    }
+
+    const credentials = { email, password };
+    if (Object.keys(options).length) credentials.options = options;
+
+    const { data, error } = await supabaseClient.auth.signUp(credentials);
+    if (error) {
+      if (error.code === "anonymous_provider_disabled" || /anonymous sign-ins are disabled/i.test(error.message || "")) {
+        throw new Error("Email sign-up is not enabled correctly in Supabase. Enable the Email provider and allow new users to sign up.");
       }
-    });
-    if (error) throw error;
+      throw error;
+    }
+    currentSession = data.session ?? currentSession;
     return data;
   },
 
@@ -146,6 +152,17 @@ export const Auth = {
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
     if (error) throw error;
     currentSession = data.session;
+    return data;
+  },
+
+  async signInWithOAuth(provider) {
+    const supabaseClient = requireClient();
+    const redirectTo = redirectUrl("");
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo }
+    });
+    if (error) throw error;
     return data;
   },
 

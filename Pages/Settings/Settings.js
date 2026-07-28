@@ -54,254 +54,6 @@ function statusMarkup(message, type = "info") {
   return `<div class="form-status form-status-${type}" role="status">${escapeHtml(message)}</div>`;
 }
 
-function formButtonsBusy(form, busy) {
-  form.querySelectorAll("button, input").forEach(control => {
-    control.disabled = busy;
-  });
-  form.setAttribute("aria-busy", String(busy));
-}
-
-function signedOutAccountMarkup(view = "signin", message = "", statusType = "info", email = "") {
-  if (view === "signup-sent") {
-    return `
-      <div class="auth-result-panel">
-        <span class="auth-result-icon" aria-hidden="true">✉</span>
-        <h3>Check your email</h3>
-        <p>We sent a confirmation link to <strong>${escapeHtml(email)}</strong>.</p>
-        <p class="muted">Open the link, then press the confirmation button on the Frever page.</p>
-        ${statusMarkup(message, statusType)}
-        <form class="form-stack" data-auth-form="resend-confirmation">
-          <input type="hidden" name="email" value="${escapeHtml(email)}">
-          <button class="button button-secondary" type="submit">Send confirmation email again</button>
-        </form>
-        <button class="text-button" type="button" data-account-view="signin">Return to sign in</button>
-      </div>`;
-  }
-
-  if (view === "reset-sent") {
-    return `
-      <div class="auth-result-panel">
-        <span class="auth-result-icon" aria-hidden="true">✉</span>
-        <h3>Check your email</h3>
-        <p>If an account exists for <strong>${escapeHtml(email)}</strong>, a password-reset email has been sent.</p>
-        <p class="muted">The email opens a dedicated Frever reset page rather than the Homepage.</p>
-        ${statusMarkup(message, statusType)}
-        <button class="text-button" type="button" data-account-view="signin">Return to sign in</button>
-      </div>`;
-  }
-
-  if (view === "signup") {
-    return `
-      <div class="auth-panel-copy">
-        <h3>Create a Frever account</h3>
-        <p>Use the same account across Frever apps.</p>
-      </div>
-      ${statusMarkup(message, statusType)}
-      <form class="form-stack" data-auth-form="signup">
-        <label class="form-field">
-          <span>Name</span>
-          <input name="displayName" type="text" autocomplete="name" maxlength="80" required>
-        </label>
-        <label class="form-field">
-          <span>Email address</span>
-          <input name="email" type="email" autocomplete="email" required value="${escapeHtml(email)}">
-        </label>
-        <label class="form-field">
-          <span>Password</span>
-          <input name="password" type="password" autocomplete="new-password" minlength="8" required>
-        </label>
-        <label class="form-field">
-          <span>Confirm password</span>
-          <input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required>
-        </label>
-        <button class="button button-primary" type="submit">Create account</button>
-      </form>
-      <p class="auth-switch-copy">Already registered? <button class="text-button" type="button" data-account-view="signin">Sign in</button></p>`;
-  }
-
-  if (view === "forgot") {
-    return `
-      <div class="auth-panel-copy">
-        <h3>Reset your password</h3>
-        <p>We will email you a secure Frever reset link.</p>
-      </div>
-      ${statusMarkup(message, statusType)}
-      <form class="form-stack" data-auth-form="forgot-password">
-        <label class="form-field">
-          <span>Email address</span>
-          <input name="email" type="email" autocomplete="email" required value="${escapeHtml(email)}">
-        </label>
-        <button class="button button-primary" type="submit">Send reset email</button>
-      </form>
-      <button class="text-button" type="button" data-account-view="signin">Return to sign in</button>`;
-  }
-
-  return `
-    <div class="auth-panel-copy">
-      <h3>Sign in</h3>
-      <p>Access your profile and synchronised app settings.</p>
-    </div>
-    ${statusMarkup(message, statusType)}
-    <form class="form-stack" data-auth-form="signin">
-      <label class="form-field">
-        <span>Email address</span>
-        <input name="email" type="email" autocomplete="email" required value="${escapeHtml(email)}">
-      </label>
-      <label class="form-field">
-        <span>Password</span>
-        <input name="password" type="password" autocomplete="current-password" required>
-      </label>
-      <button class="button button-primary" type="submit">Sign in</button>
-    </form>
-    <div class="auth-link-row">
-      <button class="text-button" type="button" data-account-view="forgot">Forgot password?</button>
-      <button class="text-button" type="button" data-account-view="signup">Create account</button>
-    </div>`;
-}
-
-async function signedInAccountMarkup(user, message = "", statusType = "info") {
-  let profile = null;
-  try {
-    profile = await Database.getProfile();
-  } catch (error) {
-    console.warn("Could not load profile", error);
-  }
-
-  const displayName = profile?.display_name
-    || user.user_metadata?.display_name
-    || user.email?.split("@")[0]
-    || "";
-
-  return `
-    <div class="account-summary">
-      <span class="account-avatar" aria-hidden="true">👤</span>
-      <div>
-        <strong>${escapeHtml(displayName || "Frever user")}</strong>
-        <span>${escapeHtml(user.email)}</span>
-      </div>
-    </div>
-    ${statusMarkup(message, statusType)}
-    <form class="form-stack" data-auth-form="profile">
-      <label class="form-field">
-        <span>Display name</span>
-        <input name="displayName" type="text" autocomplete="name" maxlength="80" required value="${escapeHtml(displayName)}">
-      </label>
-      <label class="form-field">
-        <span>Email address</span>
-        <input type="email" value="${escapeHtml(user.email)}" disabled>
-      </label>
-      <button class="button button-primary" type="submit">Save profile</button>
-    </form>
-    <div class="modal-note">Your password is managed securely by Supabase Auth and is not stored in Frever tables.</div>
-    <button class="button button-secondary button-danger-outline" type="button" data-sign-out>Sign out</button>`;
-}
-
-async function openAccount() {
-  let currentView = "signin";
-  let lastEmail = "";
-  let authChangeHandler = null;
-
-  const content = await Modal.open({
-    title: "Account",
-    onClose: () => {
-      if (authChangeHandler) window.removeEventListener("frever:auth-changed", authChangeHandler);
-    },
-    content: `<div class="modal-stack" data-account-content></div>`
-  });
-
-  const root = content.querySelector("[data-account-content]");
-
-  const render = async (message = "", statusType = "info") => {
-    const user = Auth.getCurrentUser();
-    root.innerHTML = user
-      ? await signedInAccountMarkup(user, message, statusType)
-      : signedOutAccountMarkup(currentView, message, statusType, lastEmail);
-  };
-
-  authChangeHandler = () => render();
-  window.addEventListener("frever:auth-changed", authChangeHandler);
-  await render();
-
-  root.addEventListener("click", async event => {
-    const viewButton = event.target.closest("[data-account-view]");
-    if (viewButton) {
-      currentView = viewButton.dataset.accountView;
-      await render();
-      return;
-    }
-
-    if (!event.target.closest("[data-sign-out]")) return;
-    const button = event.target.closest("[data-sign-out]");
-    button.disabled = true;
-    try {
-      await Auth.signOut();
-      currentView = "signin";
-      await render("You have been signed out.", "success");
-    } catch (error) {
-      await render(error.message, "error");
-    }
-  });
-
-  root.addEventListener("submit", async event => {
-    const form = event.target.closest("[data-auth-form]");
-    if (!form) return;
-    event.preventDefault();
-    formButtonsBusy(form, true);
-    const values = Object.fromEntries(new FormData(form).entries());
-
-    try {
-      switch (form.dataset.authForm) {
-        case "signin":
-          lastEmail = String(values.email || "").trim();
-          await Auth.signIn({ email: lastEmail, password: String(values.password || "") });
-          await Database.syncUserPreferences();
-          await render("Signed in successfully.", "success");
-          break;
-
-        case "signup": {
-          lastEmail = String(values.email || "").trim();
-          const password = String(values.password || "");
-          if (password !== String(values.confirmPassword || "")) {
-            throw new Error("The passwords do not match.");
-          }
-          await Auth.signUp({
-            email: lastEmail,
-            password,
-            displayName: String(values.displayName || "")
-          });
-          currentView = "signup-sent";
-          await render();
-          break;
-        }
-
-        case "forgot-password":
-          lastEmail = String(values.email || "").trim();
-          await Auth.requestPasswordReset(lastEmail);
-          currentView = "reset-sent";
-          await render();
-          break;
-
-        case "resend-confirmation":
-          lastEmail = String(values.email || "").trim();
-          await Auth.resendConfirmation(lastEmail);
-          currentView = "signup-sent";
-          await render("A new confirmation email has been sent.", "success");
-          break;
-
-        case "profile":
-          await Database.updateProfile({ displayName: String(values.displayName || "") });
-          await render("Profile updated.", "success");
-          break;
-
-        default:
-          break;
-      }
-    } catch (error) {
-      await render(error.message || "Something went wrong.", "error");
-    }
-  });
-}
-
 function appearancePreviewOption(value, label, description) {
   return `
     <label class="appearance-preview-card" data-appearance-card="${value}">
@@ -325,6 +77,67 @@ function appearancePreviewOption(value, label, description) {
         <small>${description}</small>
       </span>
     </label>`;
+}
+
+
+async function openAccount() {
+  const user = Auth.getCurrentUser();
+  if (!user) return;
+
+  let profile = null;
+  try {
+    profile = await Database.getProfile();
+  } catch (error) {
+    console.warn("Could not load profile", error);
+  }
+
+  const displayName = profile?.display_name || user.user_metadata?.display_name || "";
+  const content = await Modal.open({
+    title: "Account",
+    content: `
+      <div class="modal-stack">
+        <div class="account-summary">
+          <span class="account-avatar" aria-hidden="true">👤</span>
+          <div>
+            <strong>${escapeHtml(displayName || "Frever user")}</strong>
+            <span>${escapeHtml(user.email || "")}</span>
+          </div>
+        </div>
+
+        <form class="form-stack" data-account-form>
+          <label class="form-field">
+            <span>Display name <small>(optional)</small></span>
+            <input name="displayName" type="text" autocomplete="name" maxlength="80" value="${escapeHtml(displayName)}">
+          </label>
+          <label class="form-field">
+            <span>Email address</span>
+            <input type="email" value="${escapeHtml(user.email || "")}" disabled>
+          </label>
+          <button class="button button-primary" type="submit">Save account details</button>
+        </form>
+        <div data-account-status></div>
+      </div>`
+  });
+
+  content.addEventListener("submit", async event => {
+    const form = event.target.closest("[data-account-form]");
+    if (!form) return;
+    event.preventDefault();
+
+    const button = form.querySelector('button[type="submit"]');
+    const status = content.querySelector("[data-account-status]");
+    button.disabled = true;
+
+    try {
+      const values = Object.fromEntries(new FormData(form).entries());
+      await Database.updateProfile({ displayName: String(values.displayName || "") });
+      status.innerHTML = statusMarkup("Account details updated.", "success");
+    } catch (error) {
+      status.innerHTML = statusMarkup(error.message || "Could not update account details.", "error");
+    } finally {
+      button.disabled = false;
+    }
+  });
 }
 
 async function openHomeLayout(navigationItems) {
@@ -422,7 +235,7 @@ async function openHomeLayout(navigationItems) {
 
 async function openNavigation(navigationItems) {
   const configurableItems = navigationItems
-    .filter(item => !item.fixed)
+    .filter(item => !item.fixed && item.showInNavigation !== false)
     .sort((a, b) => a.position - b.position);
   const defaults = defaultNavigationButtons(navigationItems);
   const storedNavigationButtons = Storage.get("navigationButtons", defaults);
@@ -555,12 +368,46 @@ async function openAbout(appConfig) {
   });
 }
 
+async function openSignOut() {
+  const content = await Modal.open({
+    title: "Sign out",
+    content: `
+      <div class="modal-stack">
+        <p>Sign out of your Frever account on this device?</p>
+        <div class="modal-action-row modal-action-row-split">
+          <button class="button button-secondary" type="button" data-cancel-signout>Cancel</button>
+          <button class="button button-primary" type="button" data-confirm-signout>Sign out</button>
+        </div>
+      </div>`
+  });
+
+  content.addEventListener("click", async event => {
+    if (event.target.closest("[data-cancel-signout]")) {
+      Modal.close("cancel");
+      return;
+    }
+
+    const button = event.target.closest("[data-confirm-signout]");
+    if (!button) return;
+    button.disabled = true;
+
+    try {
+      await Auth.signOut();
+      Modal.close("signed-out");
+    } catch (error) {
+      button.disabled = false;
+      showToast(error.message || "Could not sign out", "error");
+    }
+  });
+}
+
 export async function init() {
   const page = document.querySelector('[data-page="settings"]');
   const [appConfig, navigationConfig] = await Promise.all([
     loadJson("./Config/App.json"),
     loadJson("./Config/Navigation.json")
   ]);
+
 
   const clickHandler = async event => {
     const tile = event.target.closest("[data-settings-panel]");
@@ -581,6 +428,9 @@ export async function init() {
         break;
       case "about":
         await openAbout(appConfig);
+        break;
+      case "sign-out":
+        await openSignOut();
         break;
       default:
         break;

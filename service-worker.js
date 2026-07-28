@@ -1,4 +1,4 @@
-const CACHE_NAME = "frever-template-v0.2.0.0";
+const CACHE_NAME = "frever-template-v0.2.2.0";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -36,8 +36,12 @@ const APP_FILES = [
   "./Config/Theme.json",
   "./Config/AccentColours.json",
   "./Config/Supabase.json",
+  "./Config/AuthProviders.json",
   "./Pages/Homepage/Homepage.html",
   "./Pages/Homepage/Homepage.json",
+  "./Pages/Authentication/Authentication.html",
+  "./Pages/Authentication/Authentication.json",
+  "./Pages/Authentication/Authentication.js",
   "./Pages/Homepage/Homepage.js",
   "./Pages/PageOne/PageOne.html",
   "./Pages/PageOne/PageOne.json",

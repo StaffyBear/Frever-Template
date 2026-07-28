@@ -741,3 +741,19 @@ body.modal-open {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+
+.settings-tile.is-disabled,
+.settings-tile:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.settings-tile.is-disabled:hover,
+.settings-tile.is-disabled:focus-visible,
+.settings-tile:disabled:hover,
+.settings-tile:disabled:focus-visible {
+  border-color: var(--border);
+  outline: none;
+}
