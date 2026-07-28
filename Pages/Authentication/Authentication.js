@@ -137,12 +137,15 @@ export async function init({ root, appConfig }) {
     const form = event.target.closest("[data-auth-form]");
     if (!form) return;
     event.preventDefault();
-    setBusy(form, true);
 
+    // Read the values before disabling the form. Disabled inputs are excluded
+    // from FormData, which previously made every submission appear empty.
     const values = Object.fromEntries(new FormData(form).entries());
     const email = String(values.email || "").trim();
     const password = String(values.password || "");
     lastEmail = email;
+
+    setBusy(form, true);
 
     try {
       if (!email || !password) throw new Error("Enter your email address and password.");

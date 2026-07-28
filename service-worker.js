@@ -1,4 +1,4 @@
-const CACHE_NAME = "frever-template-v0.2.2.0";
+const CACHE_NAME = "frever-template-v0.2.3.0";
 const APP_FILES = [
   "./",
   "./index.html",

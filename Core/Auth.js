@@ -5,7 +5,7 @@ let authSubscription = null;
 let initialized = false;
 
 async function loadConfig() {
-  const version = window.FREVER_APP_VERSION || "0.2.2";
+  const version = window.FREVER_APP_VERSION || "0.2.3";
   const response = await fetch(`./Config/Supabase.json?v=${encodeURIComponent(version)}`, {
     cache: "no-store"
   });

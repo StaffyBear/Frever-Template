@@ -18,7 +18,7 @@ async function start() {
   const root = document.querySelector("#standalone-auth-app");
   try {
     const appConfig = await loadJson("./Config/App.json");
-    window.FREVER_APP_VERSION = appConfig.version || "0.2.2";
+    window.FREVER_APP_VERSION = appConfig.version || "0.2.3";
     Storage.setNamespace(appConfig.appCode);
     await Theme.init();
     await Auth.init();

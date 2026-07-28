@@ -1,6 +1,6 @@
-# Frever v0.2.2 — authentication without email delivery
+# Frever v0.2.3 — authentication without email delivery
 
-No new SQL is required for v0.2.2.
+No new SQL is required for v0.2.3.
 
 In Supabase open **Authentication → Sign In / Providers → Email** and confirm:
 

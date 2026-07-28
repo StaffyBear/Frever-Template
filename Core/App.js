@@ -7,7 +7,7 @@ import { Auth } from "./Auth.js";
 import { Database } from "./Database.js";
 import { Modal } from "../Components/Modal/Modal.js";
 
-const BUILD_VERSION = "0.2.2";
+const BUILD_VERSION = "0.2.3";
 let authSyncInProgress = false;
 let shellMounted = false;
 let authenticationCleanup = null;
