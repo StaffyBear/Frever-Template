@@ -22,14 +22,14 @@
 }
 
 :root[data-theme="dark"] {
-  --page-bg: #101824;
-  --surface: #182332;
-  --surface-raised: #1d2a3a;
-  --surface-subtle: #223144;
-  --text-primary: #eef4fb;
-  --text-secondary: #aebdcd;
-  --border: #314257;
-  --shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
-  --header-bg: #101b29;
+  --page-bg: #152231;
+  --surface: #1d2c3e;
+  --surface-raised: #243448;
+  --surface-subtle: #293a4f;
+  --text-primary: #f1f6fb;
+  --text-secondary: #b8c5d3;
+  --border: #3b4f67;
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+  --header-bg: #10263f;
   color-scheme: dark;
 }

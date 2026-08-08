@@ -1,4 +1,4 @@
-# Frever App Template v0.2.3
+# Frever App Template v0.2.4
 
 A reusable Frever shell with a required Supabase account session.
 
@@ -44,14 +44,16 @@ It is not part of `Config/Navigation.json`, the Homepage tiles or bottom navigat
 
 ## Upload
 
-1. Upload all v0.2.3 files over the current GitHub repository.
+1. Upload all v0.2.4 files over the current GitHub repository.
 2. Wait for GitHub Pages to finish deploying.
 3. Open `update.html` once to clear the previous service-worker cache.
 4. Test registration, sign out and sign in.
 
 Passwords are managed by Supabase Auth and never appear in the editable Frever tables.
 
-## v0.2.3 fix
+## v0.2.4 visual update
 
-- Corrected sign-in and registration forms so their values are read before the controls are disabled.
+- Lightened the dark-mode page background so the header, page and tiles are visually distinct.
+- Added colourful configurable Homepage tile icons through `Config/Navigation.json`.
+- Increased Homepage tile height and icon prominence.
 - No SQL changes are required.

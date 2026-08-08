@@ -1,11 +1,11 @@
 import { Storage } from "../../Core/Storage.js";
 
-const ICONS = {
-  home: "⌂",
-  grid: "▦",
-  list: "☷",
-  chart: "▥",
-  settings: "⚙"
+const FALLBACK_TILE_ICONS = {
+  home: "🏠",
+  grid: "🧩",
+  list: "📋",
+  chart: "📊",
+  settings: "⚙️"
 };
 
 async function loadNavigation() {
@@ -48,7 +48,7 @@ function renderTiles(grid, items) {
 
   grid.innerHTML = visibleItems.map(item => `
     <button class="home-menu-tile" type="button" data-open-page="${item.id}">
-      <span class="home-menu-icon" aria-hidden="true">${ICONS[item.icon] ?? ICONS.grid}</span>
+      <span class="home-menu-icon" aria-hidden="true">${item.tileIcon ?? FALLBACK_TILE_ICONS[item.icon] ?? FALLBACK_TILE_ICONS.grid}</span>
       <strong>${item.label}</strong>
     </button>`).join("");
 }
